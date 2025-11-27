@@ -1,6 +1,16 @@
 {
   "title": "Handbook",
   "description": "The description of root folder (optional)",
-   "pages": ["how-we-work","project-managment", "long-term-vision","finance-and-operation","people","security","future-of-gtdn","practilatiies","docks-edit"],
+  "pages": [
+    "how-we-work",
+    "project-managment",
+    "long-term-vision",
+    "finance-and-operation",
+    "people",
+    "security",
+    "future-of-gtdn",
+    "practilatiies",
+    "docks-edit"
+  ],
   "root": true
 }
