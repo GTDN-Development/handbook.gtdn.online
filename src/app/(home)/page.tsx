@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-1 flex-col justify-center text-center">
       <h1 className="mb-4 text-2xl font-bold">Welcome to the gtdn Knowledge Base</h1>
-      <div className="flex flex-col space-y-2 px-64">
+      <div className="mx-auto w-full max-w-4xl space-y-4 px-4">
         <p>
           This is the single source of truth for everything related to development and operations at
           gtdn. Whether it's your first day or you're looking for a specific technical guide, you're
@@ -17,7 +17,7 @@ export default function HomePage() {
       </div>
       <p className="mt-12">
         You can open{" "}
-        <Link href="/docs" className="font-medium underline">
+        <Link href="/docs/company/01-about/welcome" className="font-medium underline">
           /docs
         </Link>{" "}
         and see the documentation.
