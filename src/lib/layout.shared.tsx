@@ -5,5 +5,9 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: "GTDN",
     },
+    githubUrl: "https://github.com",
+    themeSwitch: {
+      mode: "light-dark-system",
+    },
   };
 }

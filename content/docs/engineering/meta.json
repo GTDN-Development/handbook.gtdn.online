@@ -1,5 +1,16 @@
 {
   "title": "Engineering",
-  "description": "Tech stack, development workflows, and infrastructure.",
+  "description": "How we cook overall",
+  "pages": [
+    "introduction",
+    "general",
+    "web-development",
+    "mobile-development",
+    "backend",
+    "dev-ops",
+    "our-infra",
+    "admin-ops"
+  ],
+  "icon": "Code",
   "root": true
 }

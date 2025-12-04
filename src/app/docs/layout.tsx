@@ -6,13 +6,10 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
   return (
     <DocsLayout
       tree={source.pageTree}
-      {...baseOptions()}
       sidebar={{
         defaultOpenLevel: 1,
       }}
-      themeSwitch={{
-        mode: "light-dark-system",
-      }}
+      {...baseOptions()}
     >
       {children}
     </DocsLayout>

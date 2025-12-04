@@ -1,0 +1,7 @@
+{
+  "title": "Marketing & Sales",
+  "description": "How we sell ourselves to our customers",
+  "pages": ["introduction", "general", "marketing", "sales", "assets"],
+  "icon": "ChartSpline",
+  "root": true
+}
