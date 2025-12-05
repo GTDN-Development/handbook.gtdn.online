@@ -23,32 +23,24 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
           <DocsTitle>{page.data.title}</DocsTitle>
-          <div className="hidden gap-2 lg:flex">
-            <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+          <div className="flex gap-2">
+            <div className="hidden lg:block">
+              <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+            </div>
 
             {neighbours.previous && (
-              <Button
-                variant="secondary"
-                size="icon"
-                className="extend-touch-target ml-auto size-8 shadow-none md:size-7"
-                asChild
-              >
+              <Button variant="secondary" size="icon-sm" asChild>
                 <Link href={neighbours.previous.url}>
-                  <ArrowLeftIcon />
+                  <ArrowLeftIcon aria-hidden="true" />
                   <span className="sr-only">Previous</span>
                 </Link>
               </Button>
             )}
             {neighbours.next && (
-              <Button
-                variant="secondary"
-                size="icon"
-                className="extend-touch-target size-8 shadow-none md:size-7"
-                asChild
-              >
+              <Button variant="secondary" size="icon-sm" asChild>
                 <Link href={neighbours.next.url}>
                   <span className="sr-only">Next</span>
-                  <ArrowRightIcon />
+                  <ArrowRightIcon aria-hidden="true" />
                 </Link>
               </Button>
             )}
