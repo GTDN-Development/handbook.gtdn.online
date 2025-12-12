@@ -1,6 +1,171 @@
 ---
 title: "Motion In View"
-description: "Lorem ipsum dolor"
+description: "Animates elements when they enter the viewport with customizable presets and stagger effects"
+highlight: true
 ---
 
-## Motion In View
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { Example } from "@/components/example";
+import { MotionInView, MotionStaggerGroup } from "@/registry/v2/ui/motion-in-view";
+
+<Example reload>
+  <MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+    Animated box
+  </MotionInView>
+</Example>
+
+## Usage
+
+```tsx
+import { MotionInView } from "@/components/ui/motion-in-view";
+```
+
+```tsx
+<MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+  Animated box
+</MotionInView>
+```
+
+## Installation
+
+<Steps>
+    <Step>
+        **Install the dependencies**
+
+        ```bash
+        npm install motion@latest
+        ```
+    </Step>
+    <Step>
+        **Create the component file**
+
+        ```bash
+        touch src/components/ui/motion-in-view.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & paste the source code**
+
+        <include cwd lang="tsx" meta='title="components/ui/motion-in-view.tsx"'>
+          src/registry/v2/ui/motion-in-view.tsx
+        </include>
+        Update the import paths to match the project setup.
+    </Step>
+
+</Steps>
+
+## Examples
+
+### Presets
+
+The component comes with several built-in animation presets: `fade`, `slideUp`, `focus`, and `focusUp`. You can easily add or modify presets by editing the `presets` object in the source code.
+
+<Example reload>
+  <div className="flex flex-col gap-8">
+    <MotionInView preset="fade" className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Fade
+    </MotionInView>
+    <MotionInView preset="slideUp" className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Slide Up
+    </MotionInView>
+    <MotionInView preset="focus" className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Focus
+    </MotionInView>
+    <MotionInView preset="focusUp" className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Focus Up
+    </MotionInView>
+  </div>
+</Example>
+
+```tsx
+<MotionInView preset="fade">Fade animation</MotionInView>
+<MotionInView preset="slideUp">Slide up animation</MotionInView>
+<MotionInView preset="focus">Focus animation</MotionInView>
+<MotionInView preset="focusUp">Focus up animation</MotionInView>
+```
+
+### Animating Children with Stagger Group
+
+The `MotionStaggerGroup` component creates sequential animations for its children. Wrap multiple `MotionInView` components to create a staggered effect.
+
+<Example reload>
+  <MotionStaggerGroup className="flex flex-col gap-8">
+    <MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      First
+    </MotionInView>
+    <MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Second
+    </MotionInView>
+    <MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Third
+    </MotionInView>
+    <MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Fourth
+    </MotionInView>
+    <MotionInView className="h-16 w-48 rounded-lg bg-primary p-4 flex items-center justify-center font-bold text-primary-foreground">
+      Fifth
+    </MotionInView>
+  </MotionStaggerGroup>
+</Example>
+
+```tsx
+<MotionStaggerGroup stagger={0.2}>
+  <MotionInView>First item</MotionInView>
+  <MotionInView>Second item</MotionInView>
+  <MotionInView>Third item</MotionInView>
+  <MotionInView>Fourth item</MotionInView>
+  <MotionInView>Fifth item</MotionInView>
+</MotionStaggerGroup>
+```
+
+## API Reference
+
+### MotionInView
+
+The component extends `<motion.div>` and adds the following props on top.
+
+<TypeTable
+  type={{
+    preset: {
+      description: "Animation preset to use",
+      type: '"fade" | "slideUp" | "focus" | "focusUp"',
+      default: '"slideUp"',
+    },
+    duration: {
+      description: "Duration of the animation in seconds",
+      type: "number",
+      default: "0.9",
+    },
+    delay: {
+      description: "Delay before animation starts in seconds",
+      type: "number",
+      default: "0",
+    },
+    ease: {
+      description: "Easing function for the animation",
+      type: 'KeyframeOptions["ease"]',
+      default: "[0.21, 0.47, 0.32, 0.98]",
+    },
+  }}
+/>
+
+### MotionStaggerGroup
+
+The component extends `<motion.div>` and adds the following props on top.
+
+<TypeTable
+  type={{
+    stagger: {
+      description: "Delay between each child animation in seconds",
+      type: "number",
+      default: "0.2",
+    },
+    delay: {
+      description: "Initial delay before stagger animations start",
+      type: "number",
+      default: "0",
+    },
+  }}
+/>

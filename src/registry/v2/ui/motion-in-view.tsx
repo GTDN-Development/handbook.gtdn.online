@@ -79,7 +79,7 @@ export function MotionInView({
   );
 }
 
-export function InViewStagger({
+export function MotionStaggerGroup({
   stagger: staggerDuration = 0.2,
   delay = 0,
   ...props

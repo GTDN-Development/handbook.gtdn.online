@@ -1,6 +1,97 @@
 ---
 title: "Motion Parallax"
-description: "Lorem ipsum dolor"
+description: "Creates a smooth parallax scrolling effect for elements based on scroll position"
+highlight: true
 ---
 
-## Motion Parallax
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { Example } from "@/components/example";
+import { MotionParallaxPreview, MotionParallaxBasic, MotionParallaxBackground } from "@/registry/v2/examples/motion-parallax-examples";
+
+<Example>
+  <MotionParallaxPreview />
+</Example>
+
+## Usage
+
+```tsx
+import { MotionParallax } from "@/components/ui/motion-parallax";
+import { useRef } from "react";
+```
+
+```tsx
+const containerRef = useRef<HTMLDivElement>(null);
+
+<div ref={containerRef} className="flex h-96 items-center justify-center gap-8">
+  <MotionParallax
+    target={containerRef}
+    offset={-50}
+    className="bg-primary text-primary-foreground rounded-xl px-6 py-3"
+  >
+    Offset -50
+  </MotionParallax>
+  <MotionParallax
+    target={containerRef}
+    offset={50}
+    className="bg-secondary text-secobg-secondary-foreground rounded-xl px-6 py-3"
+  >
+    Offset 100
+  </MotionParallax>
+</div>
+```
+
+## Installation
+
+<Steps>
+    <Step>
+        **Install the dependencies**
+
+        ```bash
+        npm install motion@latest
+        ```
+    </Step>
+    <Step>
+        **Create the component file**
+
+        ```bash
+        touch src/components/ui/motion-parallax.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & paste the source code**
+
+        <include cwd lang="tsx" meta='title="components/ui/motion-parallax.tsx"'>
+          src/registry/v2/ui/motion-parallax.tsx
+        </include>
+        Update the import paths to match the project setup.
+    </Step>
+
+</Steps>
+
+## API Reference
+
+The component extends `<motion.div>` and adds the following props on top.
+
+<TypeTable
+  type={{
+    target: {
+      description: "Reference to the container element that triggers the parallax effect",
+      type: "React.RefObject<HTMLElement | null>",
+      required: true,
+    },
+    offset: {
+      description: "The amount of pixels the element will move. Positive values move down, negative values move up",
+      type: "number",
+      default: "50",
+    },
+  }}
+/>
+
+## Notes
+
+- The component automatically respects the user's `prefers-reduced-motion` setting and disables the parallax effect when motion reduction is preferred
+- The parallax effect uses a smooth spring animation with `stiffness: 400` and `damping: 90` for natural movement
+- Positive offset values move the element down as you scroll, negative values move it up
+- The component uses client-side mounting detection to prevent hydration mismatches

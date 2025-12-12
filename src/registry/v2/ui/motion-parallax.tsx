@@ -19,7 +19,7 @@ type ParallaxProps = React.ComponentPropsWithoutRef<typeof motion.div> & {
   offset?: number;
 };
 
-export function Parallax({ offset = 50, target, ...props }: ParallaxProps) {
+export function MotionParallax({ offset = 50, target, ...props }: ParallaxProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   const { scrollYProgress } = useScroll({ target });
@@ -29,7 +29,9 @@ export function Parallax({ offset = 50, target, ...props }: ParallaxProps) {
   const y = useSpring(rangeY, { stiffness: 400, damping: 90 });
 
   useEffect(() => {
-    setIsMounted(true);
+    Promise.resolve().then(() => {
+      setIsMounted(true);
+    });
   }, []);
 
   return <motion.div style={{ y: isMounted && prefersReducedMotion ? 0 : y }} {...props} />;
