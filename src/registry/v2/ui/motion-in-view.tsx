@@ -3,6 +3,7 @@
 import {
   motion,
   useReducedMotion,
+  stagger,
   type KeyframeOptions,
   type Variants,
   type Transition,
@@ -79,11 +80,11 @@ export function MotionInView({
 }
 
 export function InViewStagger({
-  stagger = 0.2,
+  stagger: staggerDuration = 0.2,
   delay = 0,
   ...props
 }: React.ComponentProps<typeof motion.div> & {
-  stagger?: Transition["staggerChildren"];
+  stagger?: number;
   delay?: Transition["delay"];
 }) {
   const prefersReducedMotion = useReducedMotion();
@@ -98,8 +99,9 @@ export function InViewStagger({
           initial: {},
           animate: {
             transition: {
-              staggerChildren: prefersReducedMotion ? 0 : stagger,
-              delayChildren: prefersReducedMotion ? 0 : delay,
+              delayChildren: prefersReducedMotion
+                ? 0
+                : stagger(staggerDuration, { startDelay: delay }),
             },
           },
         }}
