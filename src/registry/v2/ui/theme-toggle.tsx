@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-export type ThemeSwitcherProps = {
+export type ThemeToggleProps = {
   className?: string;
 };
 
@@ -30,7 +30,7 @@ function ToggleButton({ value, label, isCurrent, children }: ToggleButtonProps) 
   );
 }
 
-export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
+export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 

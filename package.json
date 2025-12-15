@@ -11,6 +11,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.4.0",
     "class-variance-authority": "^0.7.1",
     "fumadocs-core": "16.0.7",
     "fumadocs-mdx": "13.0.5",

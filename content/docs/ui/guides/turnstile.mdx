@@ -1,6 +1,120 @@
 ---
 title: "Cloudflare Turnstile"
-description: "Lorem ipsum dolor"
+description: "Guide to using Cloudflare Turnstile"
 ---
 
-Lorem ipsum dolor
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Example } from "@/components/example";
+import { Turnstile } from "@/registry/v2/ui/turnstile";
+
+
+Cloudflare Turnstile need two siteKey and secretKey. You need to render 
+
+## Installation 
+
+<Steps>
+    <Step>
+        **Install dependencies**
+
+        ```bash
+        npm install @marsidev/react-turnstile
+        ```
+    </Step>
+    <Step>
+        **Create the component file**
+        
+        ```bash
+        touch src/components/ui/turnstile.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & paste the source code**
+
+        <include cwd lang="tsx" meta='title="components/ui/turnstile.tsx"'>
+          src/registry/v2/ui/turnstile.tsx
+        </include>
+        
+        Update the import paths to match your project setup.
+    </Step>
+    
+    <Step>
+        **Create a file in lib directory**
+
+        ```bash
+        touch src/lib/turnstile.ts
+        ```
+    </Step>
+     <Step>
+        **Copy & paste the source code**
+
+        <include cwd lang="tsx" meta='title="lib/turnstile.ts"'>
+          src/registry/v2/ui/turnstile.ts
+        </include>
+    </Step>
+    
+    <Step>
+        **Add Turnstile Keys into your .env file**
+    </Step>
+</Steps>
+
+
+## Usage in Form
+
+```tsx
+import { Turnstile } from '@/components/ui/turnstile'
+
+```
+
+```tsx
+<Turnstile
+ ref={turnstileRef}
+ onSuccess={(token: string) => field.handleChange(token)}
+ onError={() => field.handleChange("")}
+ onExpire={() => field.handleChange("")}
+/>
+ ```
+
+
+```tsx
+import { verifyTurnstileToken, getClientIP } from "@/lib/turnstile";
+
+
+type ContactFormData = {
+  ...
+  turnstileToken: string;
+};
+
+
+export async function POST(request: NextRequest) {
+  try {
+    const body: ContactFormData = await request.json();
+    const { name, ... , turnstileToken } = body;
+
+    if (!name || ... || !turnstileToken) {
+      return NextResponse.json(
+        { error: "All fields are required and you must agree to the processing of personal data." },
+        { status: 400 }
+      );
+    }
+
+    // Verify Turnstile token
+    const clientIP = getClientIP(request);
+    const turnstileResult = await verifyTurnstileToken(turnstileToken, clientIP);
+
+    if (!turnstileResult.success) {
+      return NextResponse.json(
+        { error: turnstileResult.error || "Verification failed. Please try again." },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({ message: "Message sent successfully!" }, { status: 200 });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return NextResponse.json(
+      { error: "An error occurred while sending the message. Please try again later." },
+      { status: 500 }
+    );
+  }
+}
+```

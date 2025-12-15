@@ -1,6 +1,89 @@
 ---
 title: "Floating bar"
-description: "Lorem ipsum dolor"
+description: "Is a component that can be used to display a floating bar at the top of the page."
+highlight: true
 ---
 
-## Floating bar
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Example } from "@/components/example";
+import { FloatingBar } from "@/registry/v2/ui/floating-bar";
+
+
+## Usage
+
+```tsx
+import { FloatingBar } from "@/components/ui/floating-bar";
+```
+
+```tsx
+<FloatingBar className="border-b bg-background/95 backdrop-blur">
+  <nav className=" flex items-center justify-between py-4">
+    <div>Logo</div>
+    <div>Navigation</div>
+  </nav>
+</FloatingBar>
+```
+
+
+## Installation
+
+<Steps>
+<Step>
+**Install dependencies**
+
+```bash
+npm install @radix-ui/react-slot class-variance-authority
+```
+</Step>
+<Step>
+**Create the component file**
+
+```bash
+touch src/components/ui/floating-bar.tsx
+```
+</Step>
+<Step>
+**Copy & paste the source code**
+
+<include cwd lang="tsx" meta='title="components/ui/floating-bar.tsx"'>
+      src/registry/v2/ui/floating-bar.tsx
+</include>
+
+Update the import paths to match your project setup.
+</Step>
+</Steps>
+
+
+
+## Props
+
+<TypeTable
+  type={{
+    position: {
+      description: "Position type of the floating bar",
+      type: '"sticky" | "fixed"',
+      required: true,
+    },
+    autoHide: {
+      description: "Enable auto-hide behavior when scrolling down",
+      type: "boolean",
+    },
+    scrolledThreshold: {
+      description: "Scroll position (in pixels) to trigger scrolled state",
+      type: "number",
+    },
+    autoHideThreshold: {
+      description: "Scroll position (in pixels) to trigger auto-hide",
+      type: "number",
+    },
+    asChild: {
+      description: "Render as a child element ",
+      type: "boolean",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>

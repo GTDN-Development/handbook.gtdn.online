@@ -1,6 +1,48 @@
 ---
 title: "Tailwind screen"
-description: "Lorem ipsum dolor"
+description: "Is a developer helper component that allows you to preview the TailWind screen in different breakpoints."
+highlight: true
 ---
 
-## Tailwind screen
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+
+## Usage 
+
+```tsx
+import { TailwindScreen } from "@/components/ui/tailwind-screen";
+```
+
+```tsx
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <TailwindScreen />  {/* Only works in development */}
+      </body>
+    </html>
+  );
+}
+```
+
+## Installation 
+
+<Steps>
+    <Step>
+        **Create the component file**
+       
+       ```bash
+      touch src/components/ui/tailwind-screen.tsx
+     ```
+  
+        </Step>
+        <Step>
+        **Copy & paste the source code** 
+        
+        <include cwd lang="tsx" meta='title="components/ui/tailwind-screen.tsx"'>
+        src/registry/v2/ui/tailwind-screen.tsx
+        </include>
+        </Step>
+</Steps>

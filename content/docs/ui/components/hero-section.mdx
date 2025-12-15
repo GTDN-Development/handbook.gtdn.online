@@ -1,6 +1,76 @@
 ---
 title: "Hero section"
-description: "Lorem ipsum dolor"
+description: "Hero section component"
+highlight: true
 ---
 
-## Hero section
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Hero, HeroBackground, HeroContent, HeroTitle, HeroDescription, HeroActions } from "@/registry/v2/ui/hero";
+
+
+
+## Usage
+
+```tsx
+import { Hero, 
+  HeroBackground,
+  HeroContent,
+  HeroTitle,
+  HeroDescription,
+  HeroActions }
+from "@/components/ui/hero";
+```
+
+```tsx
+<Hero>
+  <HeroBackground />
+    <HeroContent>
+        <HeroTitle>Hero Title</HeroTitle>
+           <HeroDescription>
+             Hero Description
+           </HeroDescription>
+             <HeroActions>
+               Hero Actions
+             </HeroActions>
+    </HeroContent>
+</Hero>
+```
+
+
+## Installation 
+
+
+<Steps>
+<Step>
+**Install the Container component**
+
+
+This component depends on the [Container](/docs/ui/components/container) component. Make sure you have it installed first.
+</Step>
+
+<Step>
+**Install dependencies**
+
+```bash
+npm install @radix-ui/react-slot
+```
+</Step>
+
+<Step>
+**Create the component file**
+
+```bash
+touch src/components/ui/hero.tsx
+```
+</Step>
+
+<Step>
+**Copy & paste the source code**
+
+<include cwd lang="tsx" meta='title="components/ui/hero.tsx"'>
+  src/registry/v2/ui/hero.tsx
+</include>
+
+Update the import paths to match your project setup.
+</Step>
+</Steps>

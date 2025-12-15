@@ -1,6 +1,53 @@
 ---
 title: "Theme toggle"
-description: "Lorem ipsum dolor"
+description: "Theme toggle that changes the theme of the application."
+highlight: true
 ---
 
-## Theme toggle
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Example } from "@/components/example";
+import { ThemeToggle } from "@/registry/v2/ui/theme-toggle";
+
+
+<Example>
+<ThemeToggle />
+</Example>
+
+## Usage
+
+```tsx
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+```
+```tsx
+<ThemeToggle />
+```
+
+
+## Installation
+
+
+<Steps>
+<Step>
+**Install dependencies**
+
+```bash
+npm install @radix-ui/react-radio-group next-themes lucide-react
+```
+</Step>
+<Step>
+**Create the component file**
+
+```bash
+touch src/components/ui/theme-toggle.tsx
+```
+</Step>
+
+<Step>
+**Copy & paste the source code**
+<include cwd lang="tsx" meta='title="components/ui/theme-toggle.tsx"'>
+     src/registry/v2/ui/theme-toggle.tsx
+</include>
+
+Update the import paths to match your project setup.
+</Step>
+</Steps>
