@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
+import { Container, containerVariants, type ContainerProps } from "./container";
 
 import { cn } from "@/lib/utils";
-import { Container, containerVariants, type ContainerProps } from "./container";
 
 function Hero({
   className,
@@ -33,7 +33,7 @@ function HeroBackground({
   return <Comp className={cn("absolute inset-0 -z-10 size-full", className)} {...props} />;
 }
 
-export function HeroBackgroundGrid({
+export function HeroBackgroundPatternGrid({
   gridSize = 100,
   className,
   ...props

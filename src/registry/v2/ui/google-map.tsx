@@ -1,12 +1,11 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
-export type GoogleMapProps = React.ComponentProps<"div"> & {
+export type GoogleMapProps = Omit<React.ComponentProps<"iframe">, "src"> & {
+  title?: string;
   address: string;
+  zoom?: number;
   width?: string | number;
   height?: string | number;
-  zoom?: number;
-  title?: string;
 };
 
 export function GoogleMap({
@@ -14,30 +13,24 @@ export function GoogleMap({
   width = "100%",
   height = 450,
   zoom = 12,
-  className,
-  title = "Google Maps",
+  title = "Google map",
+  loading = "lazy",
+  allowFullScreen = true,
+  ...props
 }: GoogleMapProps) {
   const encodedAddress = encodeURIComponent(address);
   const mapUrl = `https://www.google.com/maps?q=${encodedAddress}&z=${zoom}&output=embed`;
 
   return (
-    <div
-      className={cn(
-        "border-border-default relative overflow-hidden rounded-xl border sm:rounded-2xl",
-        className
-      )}
-    >
-      <iframe
-        src={mapUrl}
-        width={width}
-        height={height}
-        style={{ border: 0 }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        title={title}
-        className="size-full"
-      />
-    </div>
+    <iframe
+      {...props}
+      title={title}
+      src={mapUrl}
+      width={width}
+      height={height}
+      loading={loading}
+      allowFullScreen={allowFullScreen}
+      referrerPolicy="no-referrer-when-downgrade"
+    />
   );
 }

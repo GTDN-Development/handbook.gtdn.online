@@ -1,6 +1,6 @@
 ---
 title: "Google map"
-description: "A google map component that displays a location on Google Maps."
+description: "A google map component that displays a location on Google Maps by providing simple adress."
 highlight: true
 ---
 
@@ -9,7 +9,7 @@ import { Example } from "@/components/example";
 import { GoogleMap } from "@/registry/v2/ui/google-map";
 
 <Example>
-  <GoogleMap address="Moravská 854/2, 312 00 Plzeň 4-Doubravka, Česko" />
+    <GoogleMap address="Moravská 854/2, 312 00 Plzeň 4-Doubravka, Česko" className="rounded-2xl max-w-md h-64" />
 </Example>
 
 ## Usage
@@ -17,27 +17,28 @@ import { GoogleMap } from "@/registry/v2/ui/google-map";
 ```tsx
 import { GoogleMap } from "@/components/ui/google-map";
 ```
+
 ```tsx
-<GoogleMap address="Moravská 854/2, 312 00 Plzeň 4-Doubravka, Česko" />
+<GoogleMap address="Moravská 854/2, 312 00 Plzeň 4-Doubravka, Česko" className="rounded-2xl max-w-md h-64" />
 ```
 
 ## Installation
 
 <Steps>
     <Step>
-    **Create the component file**
-    
-    ```bash
-    touch src/components/ui/google-map.tsx
-    ```
+        **Create the component file**
+
+        ```bash
+        touch src/components/ui/google-map.tsx
+        ```
     </Step>
     <Step>
-    **Copy & paste the source code**
-     <include cwd lang="tsx" meta='title="components/ui/google-map.tsx"'>
-          src/registry/v2/ui/google-map.tsx
-    </include>
-    Update the import paths to match the project setup.
-    
+        **Copy & paste the source code**
 
+        <include cwd lang="tsx" meta='title="components/ui/google-map.tsx"'>
+            src/registry/v2/ui/google-map.tsx
+        </include>
+
+        Update the import paths to match the project setup.
     </Step>
 </Steps>

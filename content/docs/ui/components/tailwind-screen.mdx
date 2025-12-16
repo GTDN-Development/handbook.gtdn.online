@@ -1,48 +1,49 @@
 ---
-title: "Tailwind screen"
-description: "Is a developer helper component that allows you to preview the TailWind screen in different breakpoints."
+title: "Tailwind Screen"
+description: "A fixed indicator that shows the current Tailwind CSS breakpoint. Only visible in development."
 highlight: true
 ---
 
+import { Example } from "@/components/example";
 
-import { Step, Steps } from "fumadocs-ui/components/steps";
+<Example>
+    <div className="flex size-9 items-center justify-center rounded-full bg-[#282828] text-xs font-bold text-white uppercase inset-ring-1 inset-ring-current/15 dark:bg-black">
+      <div className="sm:hidden">-</div>
+      <div className="hidden sm:block md:hidden">sm</div>
+      <div className="hidden md:block lg:hidden">md</div>
+      <div className="hidden lg:block xl:hidden">lg</div>
+      <div className="hidden xl:block 2xl:hidden">xl</div>
+      <div className="hidden 2xl:block">2xl</div>
+    </div>
+</Example>
 
+*Resize the window to see the current breakpoint change.*
 
-## Usage 
+## Source code
+
+Copy and paste the component source code into your project.
+
+<include cwd lang="tsx" meta='title="components/ui/tailwind-screen.tsx"'>
+    src/registry/v2/ui/tailwind-screen.tsx
+</include>
+
+## Usage
+
+Add the component to your root layout:
 
 ```tsx
 import { TailwindScreen } from "@/components/ui/tailwind-screen";
-```
 
-```tsx
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
         {children}
-        <TailwindScreen />  {/* Only works in development */}
+        <TailwindScreen />
       </body>
     </html>
   );
 }
 ```
 
-## Installation 
-
-<Steps>
-    <Step>
-        **Create the component file**
-       
-       ```bash
-      touch src/components/ui/tailwind-screen.tsx
-     ```
-  
-        </Step>
-        <Step>
-        **Copy & paste the source code** 
-        
-        <include cwd lang="tsx" meta='title="components/ui/tailwind-screen.tsx"'>
-        src/registry/v2/ui/tailwind-screen.tsx
-        </include>
-        </Step>
-</Steps>
+The component automatically hides in production and displays as a fixed element in the bottom-left corner during development.

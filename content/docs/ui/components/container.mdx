@@ -1,14 +1,12 @@
 ---
 title: "Container"
-description: "The Container component provides a centered, max-width wrapper for your content with automatic horizontal spacing. It's essential for creating consistent, responsive layouts across your application."
+description: "Provides unified content width constraints across the app with fluid, responsive behavior."
 highlight: true
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { TypeTable } from "fumadocs-ui/components/type-table";
-import { Example } from "@/components/example";
 import { Container } from "@/registry/v2/ui/container";
-
 
 
 ## Usage
@@ -19,14 +17,9 @@ import { Container } from "@/components/ui/container";
 
 ```tsx
 <Container>
-  <Heading>Your content here</Heading>
+  Wrapped content
 </Container>
 ```
-
-
-
-
-
 
 ## Installation
 
@@ -35,7 +28,7 @@ import { Container } from "@/components/ui/container";
         **Install dependencies**
 
         ```bash
-        npm install class-variance-authority @radix-ui/react-slot
+        npm install radix-ui
         ```
     </Step>
     <Step>
@@ -51,44 +44,26 @@ import { Container } from "@/components/ui/container";
         <include cwd lang="tsx" meta='title="components/ui/container.tsx"'>
           src/registry/v2/ui/container.tsx
         </include>
-        
+
         Update the import paths to match your project setup.
     </Step>
 </Steps>
 
-##  Usage
-
-Use the `asChild` prop to render the Container as a different element while preserving its styling:
-
-```tsx
-<Container asChild>
-  <section>
-    <h1>Section with container constraints</h1>
-  </section>
-</Container>
-```
-This is useful when you need semantic HTML elements or want to avoid unnecessary div nesting.
-
-
-
 ## API Reference
 
-### Container Props
-
 <TypeTable
-type={{
-  size: {
-    type: '"sm" | "default" | "lg" | "prose" | "fluid"',
-    description: ' width variants of the container',
-  },
-  asChild: {
-    type: 'boolean',
-    description: 'You can render container as a child element',
-  },
-  className: {
-    type: 'string',
-    description: 'Additional CSS classes',
-  },
-}}
-
+    type={{
+    size: {
+        type: '"sm" | "default" | "lg" | "prose" | "fluid"',
+        description: ' width variants of the container',
+    },
+    asChild: {
+        type: 'boolean',
+        description: 'You can render container as a child element',
+    },
+    className: {
+        type: 'string',
+        description: 'Additional CSS classes',
+    },
+    }}
 />

@@ -1,76 +1,290 @@
 ---
 title: "Hero section"
-description: "Hero section component"
+description: "Provides a unified way to create hero sections with flexible background options and content layout."
 highlight: true
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
 import { Hero, HeroBackground, HeroContent, HeroTitle, HeroDescription, HeroActions } from "@/registry/v2/ui/hero";
-
 
 
 ## Usage
 
 ```tsx
-import { Hero, 
+import { Button } from "@/components/ui/button";
+import {
+  Hero,
   HeroBackground,
+  HeroBackgroundPatternGrid,
   HeroContent,
   HeroTitle,
   HeroDescription,
-  HeroActions }
-from "@/components/ui/hero";
+  HeroActions
+} from "@/components/ui/hero";
 ```
 
 ```tsx
 <Hero>
-  <HeroBackground />
-    <HeroContent>
-        <HeroTitle>Hero Title</HeroTitle>
-           <HeroDescription>
-             Hero Description
-           </HeroDescription>
-             <HeroActions>
-               Hero Actions
-             </HeroActions>
-    </HeroContent>
+  <HeroBackground>
+    <HeroBackgroundPatternGrid />
+  </HeroBackground>
+  <HeroContent>
+    <HeroTitle>Main headline of the page</HeroTitle>
+    <HeroDescription>Lorem ipsum dolor sit amet</HeroDescription>
+    <HeroActions>
+      <Button size="lg">Primary action</Button>
+      <Button size="lg" variant="secondary">Secondary action</Button>
+    </HeroActions>
+  </HeroContent>
 </Hero>
 ```
 
 
-## Installation 
+## Installation
 
 
 <Steps>
-<Step>
-**Install the Container component**
+    <Step>
+        **Install the Container component**
 
+        This component depends on the [Container](/docs/ui/components/container) component. Make sure you have it installed first.
+    </Step>
+    <Step>
+        **Install dependencies**
 
-This component depends on the [Container](/docs/ui/components/container) component. Make sure you have it installed first.
-</Step>
+        ```bash
+        npm install @radix-ui/react-slot
+        ```
+    </Step>
+    <Step>
+        **Create the component file**
 
-<Step>
-**Install dependencies**
+        ```bash
+        touch src/components/ui/hero.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & paste the source code**
 
-```bash
-npm install @radix-ui/react-slot
-```
-</Step>
+        <include cwd lang="tsx" meta='title="components/ui/hero.tsx"'>
+            src/registry/v2/ui/hero.tsx
+        </include>
 
-<Step>
-**Create the component file**
-
-```bash
-touch src/components/ui/hero.tsx
-```
-</Step>
-
-<Step>
-**Copy & paste the source code**
-
-<include cwd lang="tsx" meta='title="components/ui/hero.tsx"'>
-  src/registry/v2/ui/hero.tsx
-</include>
-
-Update the import paths to match your project setup.
-</Step>
+        Update the import paths to match your project setup.
+    </Step>
 </Steps>
+
+## Examples
+
+### Without any background
+
+By removing the `HeroBackground` component and all its content, we can have a really simple and minimal hero section.
+
+```tsx
+import { Button } from "@/components/ui/button";
+import {
+  Hero,
+  HeroBackground,
+  HeroContent,
+  HeroTitle,
+  HeroDescription,
+  HeroActions
+} from "@/components/ui/hero";
+```
+
+```tsx
+export function HeroWithImageBackground() {
+  return (
+    <Hero>
+      <HeroContent>
+        <HeroTitle>Main headline of the page</HeroTitle>
+        <HeroDescription>Lorem ipsum dolor sit amet</HeroDescription>
+        <HeroActions>
+          <Button size="lg">Primary action</Button>
+          <Button size="lg" variant="secondary">Secondary action</Button>
+        </HeroActions>
+      </HeroContent>
+    </Hero>
+  );
+}
+```
+
+### With Image Background
+
+Use the Next.js `Image` component or a standard `img` element as a background with proper styling for overlay effects.
+
+```tsx
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Hero,
+  HeroBackground,
+  HeroContent,
+  HeroTitle,
+  HeroDescription,
+  HeroActions
+} from "@/components/ui/hero";
+```
+
+```tsx
+export function HeroWithImageBackground() {
+  return (
+    <Hero>
+      <HeroBackground>
+        <Image
+          src="/hero-image.jpg"
+          alt="hero image alt"
+          width={1920}
+          height={1200}
+          priority
+          className="size-full object-cover opacity-50"
+        />
+      </HeroBackground>
+      <HeroContent>
+        <HeroTitle>Main headline of the page</HeroTitle>
+        <HeroDescription>Lorem ipsum dolor sit amet</HeroDescription>
+        <HeroActions>
+          <Button size="lg">Primary action</Button>
+          <Button size="lg" variant="secondary">Secondary action</Button>
+        </HeroActions>
+      </HeroContent>
+    </Hero>
+  );
+}
+```
+
+You can mute the image by adding some opacity to the className. There is no need to create another div as an overlay or anything else.
+
+## API Reference
+
+### Hero
+
+The main wrapper component that extends `<header>` with additional styling.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element for the one passed as a child",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### HeroBackground
+
+Container for background elements (images, videos, svg patterns, etc.) that extends `<div>`.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element for the one passed as a child",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### HeroBackgroundPatternGrid
+
+SVG grid pattern for hero backgrounds that extends `<svg>`. We are shipping this as an example of how the SVG pattern for the hero section might look.
+
+<TypeTable
+  type={{
+    gridSize: {
+      description: "Size of each grid cell in pixels",
+      type: "number",
+      default: "100",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### HeroContent
+
+Container for hero content that extends the `Container` component.
+
+<TypeTable
+  type={{
+    size: {
+      description: "Container size variant",
+      type: '"default" | "sm" | "lg" | "xl" | "full"',
+      default: '"default"',
+    },
+    asChild: {
+      description: "Change the default rendered element for the one passed as a child",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### HeroTitle
+
+Main heading component that extends `<h1>`.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element for the one passed as a child",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### HeroDescription
+
+Description text component that extends `<p>`.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element for the one passed as a child",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>
+
+### HeroActions
+
+Container for action buttons that extends `<div>`.
+
+<TypeTable
+  type={{
+    asChild: {
+      description: "Change the default rendered element for the one passed as a child",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional CSS classes",
+      type: "string",
+    },
+  }}
+/>

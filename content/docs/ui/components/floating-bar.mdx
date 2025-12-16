@@ -1,27 +1,43 @@
 ---
 title: "Floating bar"
-description: "Is a component that can be used to display a floating bar at the top of the page."
+description: "Provides common navbar behavior with fixed or sticky positioning that automatically hides when scrolling down and shows when scrolling up."
 highlight: true
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { TypeTable } from "fumadocs-ui/components/type-table";
-import { Example } from "@/components/example";
 import { FloatingBar } from "@/registry/v2/ui/floating-bar";
 
-
 ## Usage
+
+The component stores its state in data attributes (`data-scrolled` and `data-hidden`), allowing you to style different states without modifying the component itself.
 
 ```tsx
 import { FloatingBar } from "@/components/ui/floating-bar";
 ```
 
 ```tsx
-<FloatingBar className="border-b bg-background/95 backdrop-blur">
-  <nav className=" flex items-center justify-between py-4">
+<FloatingBar
+  position="fixed"
+  autoHide
+  className="bg-background transition duration-300 data-hidden:-translate-y-full data-scrolled:shadow-lg"
+>
+  <div className="w-full flex items-center justify-between py-4">
     <div>Logo</div>
-    <div>Navigation</div>
-  </nav>
+    <nav>
+      <ul className="flex gap-2">
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>
+          <a href="#">about</a>
+        </li>
+        <li>
+          <a href="#">contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </FloatingBar>
 ```
 
@@ -29,34 +45,96 @@ import { FloatingBar } from "@/components/ui/floating-bar";
 ## Installation
 
 <Steps>
-<Step>
-**Install dependencies**
+    <Step>
+        **Install dependencies**
 
-```bash
-npm install @radix-ui/react-slot class-variance-authority
-```
-</Step>
-<Step>
-**Create the component file**
+        ```bash
+        npm install @radix-ui
+        ```
+    </Step>
+    <Step>
+        **Create the component file**
 
-```bash
-touch src/components/ui/floating-bar.tsx
-```
-</Step>
-<Step>
-**Copy & paste the source code**
+        ```bash
+        touch src/components/ui/floating-bar.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & paste the source code**
 
-<include cwd lang="tsx" meta='title="components/ui/floating-bar.tsx"'>
-      src/registry/v2/ui/floating-bar.tsx
-</include>
+        <include cwd lang="tsx" meta='title="components/ui/floating-bar.tsx"'>
+            src/registry/v2/ui/floating-bar.tsx
+        </include>
 
-Update the import paths to match your project setup.
-</Step>
+        Update the import paths to match your project setup.
+    </Step>
 </Steps>
 
+## Examples
 
+### Advanced styling with data attributes
 
-## Props
+The component automatically manages `data-scrolled` and `data-hidden` attributes based on scroll behavior. You can combine these attributes with Tailwind's data attribute variants to create sophisticated styling:
+
+```tsx
+import { FloatingBar } from "@/components/ui/floating-bar";
+import { cn } from "@/lib/utils";
+```
+
+```tsx
+<FloatingBar
+  position="fixed"
+  autoHide
+  className={cn(
+    // Base styles
+    "flex h-16 w-full items-center justify-between px-6",
+    // Transition
+    "transform-gpu transition duration-300",
+    // Initial state
+    "bg-transparent backdrop-blur-2xl",
+    // Scrolled state - when the user starts scrolling
+    "data-scrolled:bg-background data-scrolled:shadow-lg",
+    // Hidden state for auto-hide behavior
+    "data-hidden:data-scrolled:shadow-none data-hidden:motion-safe:-translate-y-full"
+  )}
+>
+  <div className="font-semibold">My App</div>
+  <nav>
+    <ul className="flex gap-6">
+      <li>
+        <a href="#" className="hover:text-primary">
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="#" className="hover:text-primary">
+          About
+        </a>
+      </li>
+      <li>
+        <a href="#" className="hover:text-primary">
+          Contact
+        </a>
+      </li>
+    </ul>
+  </nav>
+</FloatingBar>
+```
+
+The styling works by targeting data attributes:
+- `data-scrolled:bg-background` - Applied when scroll position exceeds `scrolledThreshold`
+- `data-scrolled:shadow-lg` - Adds shadow when scrolled
+- `data-hidden:motion-safe:-translate-y-full` - Slides the bar up when auto-hidden (respecting motion preferences)
+- `data-hidden:data-scrolled:shadow-none` - Combines both states to remove shadow when hidden
+- `transform-gpu transition duration-300` - Provides smooth GPU-accelerated animations
+
+All state management happens internally via data attributes, keeping your styling declarative and the component unmodified.
+
+## API Reference
+
+The component extends `<div>` element with additional styling.
+
+### Props
 
 <TypeTable
   type={{
@@ -84,6 +162,23 @@ Update the import paths to match your project setup.
     className: {
       description: "Additional CSS classes",
       type: "string",
+    },
+  }}
+/>
+
+### Data attributes
+
+The component manages its state through data attributes. Use these with Tailwind's `data-*` variants to style different states.
+
+<TypeTable
+  type={{
+    "data-scrolled": {
+      description: "Present when scroll position exceeds scrolledThreshold. Use with data-scrolled: variant to style the scrolled state.",
+      type: '"true" | undefined',
+    },
+    "data-hidden": {
+      description: "Present when auto-hide is triggered (scrolling down past autoHideThreshold). Use with data-hidden: variant to style the hidden state.",
+      type: '"true" | undefined',
     },
   }}
 />
