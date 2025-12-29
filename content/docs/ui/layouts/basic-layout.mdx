@@ -1,0 +1,166 @@
+---
+title: "Basic Layout"
+description: "A complete layout setup with Header and Footer components, including navigation configuration"
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Example } from "@/components/example";
+import { Footer } from "@/registry/v2/ui/footer";
+import { Header } from "@/registry/v2/ui/header";
+
+A ready-to-use layout system with Header and Footer components that share a centralized navigation configuration. Perfect for building consistent layouts across your application.
+
+## Preview
+
+### Header
+
+<Example>
+<Header />
+</Example>
+
+### Footer
+
+<Example>
+<Footer />
+</Example>
+
+## Installation
+
+<Steps>
+<Step>
+**Create navigation config files**
+
+```bash
+mkdir -p src/config
+touch src/config/nav-links.ts src/config/legal-links.ts src/config/social-media-links.ts
+```
+</Step>
+
+<Step>
+**Setup navigation links**
+
+<include cwd lang="tsx" meta='title="config/nav-links.ts"'>
+src/config/nav-links.ts
+</include>
+
+This file contains your main navigation (primary and secondary menus).
+</Step>
+
+<Step>
+**Setup legal links**
+
+<include cwd lang="tsx" meta='title="config/legal-links.ts"'>
+src/config/legal-links.ts
+</include>
+
+Add your privacy policy, terms, and other legal pages here.
+</Step>
+
+<Step>
+**Setup social media links**
+
+<include cwd lang="tsx" meta='title="config/social-media-links.ts"'>
+src/config/social-media-links.ts
+</include>
+
+Configure your social media profiles with icons.
+</Step>
+
+<Step>
+**Install dependencies**
+
+```bash
+npm install vaul lucide-react
+```
+</Step>
+
+<Step>
+**Add Header component**
+
+Create the Header component file and add the source code.
+
+```bash
+touch src/components/ui/header.tsx
+```
+
+<include cwd lang="tsx" meta='title="components/ui/header.tsx"'>
+src/registry/v2/ui/header.tsx
+</include>
+
+Update the import paths to match your project setup.
+</Step>
+
+<Step>
+**Add Footer component**
+
+Create the Footer component file and add the source code.
+
+```bash
+touch src/components/ui/footer.tsx
+```
+
+<include cwd lang="tsx" meta='title="components/ui/footer.tsx"'>
+src/registry/v2/ui/footer.tsx
+</include>
+
+Update the import paths to match your project setup.
+</Step>
+</Steps>
+
+## Usage
+
+Use the Header and Footer components in your layout:
+
+```tsx title="app/layout.tsx"
+import { Header } from "@/components/ui/header";
+import { Footer } from "@/components/ui/footer";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html>
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
+```
+
+## Customization
+
+### Updating Navigation Links
+
+Edit `src/config/nav-links.ts` to customize your navigation:
+
+```tsx
+export const primaryNavLinks = {
+  home: { name: "Home", href: "/" },
+  // Add dropdown menu
+  products: {
+    name: "Products",
+    items: [
+      { name: "Product 1", href: "/products/1" },
+      { name: "Product 2", href: "/products/2" },
+    ],
+  },
+  // Add simple link
+  pricing: { name: "Pricing", href: "/pricing" },
+};
+```
+
+### Updating Social Media
+
+Edit `src/config/social-media-links.ts`:
+
+```tsx
+export const socialMediaLinks = {
+  twitter: {
+    name: "Twitter",
+    href: "https://twitter.com/yourhandle",
+    icon: TwitterXIcon,
+  },
+  // Add more social links...
+};
+```
