@@ -1,6 +1,7 @@
 ---
 title: "Chain"
 description: "Combines multiple callback functions into a single function that executes them sequentially"
+highlight: true
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
@@ -30,8 +31,16 @@ function Button({ onClick }: { onClick?: () => void }) {
 
 ## Installation
 
+<Steps>
+<Step>
+**Create your lib/utils.ts file**
+```bash
+touch src/lib/utils.ts
+```
+</Step>
 
-        **Add to your lib/utils.ts file**
+<Step> 
+**Copy & paste the source code to your lib/utils.ts file**
         ```tsx
         export function chain(...callbacks: any[]): (...args: any[]) => void {
           return (...args: any[]) => {
@@ -43,3 +52,5 @@ function Button({ onClick }: { onClick?: () => void }) {
           };
         }
         ```
+</Step>
+</Steps>

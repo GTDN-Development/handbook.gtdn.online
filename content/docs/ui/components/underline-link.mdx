@@ -1,6 +1,47 @@
 ---
 title: "Underline link"
-description: "Lorem ipsum dolor"
+description: "Link component with animated underline hover effect"
+highlight: true
 ---
 
-## Underline link
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Example } from "@/components/example";
+import { UnderlineLink } from "@/registry/v2/ui/underline-link";
+
+<Example>
+<UnderlineLink href="https://www.gtdn.online/cs" target="_blank" rel="noopener noreferrer">Example Link</UnderlineLink>
+</Example>
+
+
+
+## Usage
+
+```tsx
+import { UnderlineLink } from "@/components/ui/underline-link";
+```
+
+```tsx
+<UnderlineLink href="https://www.gtdn.online/cs" target="_blank" rel="noopener noreferrer">Example Link</UnderlineLink>
+```
+
+
+## Installation
+
+<Steps>
+<Step>
+**Create the component file**
+
+```bash
+touch src/components/ui/underline-link.tsx
+```
+</Step>
+<Step>
+    **Copy & paste the source code**
+
+    <include cwd lang="tsx" meta='title="components/ui/underline-link.tsx"'>
+        src/registry/v2/ui/underline-link.tsx
+    </include>
+
+    Update the import paths to match the project setup.
+</Step>
+</Steps>

@@ -91,21 +91,21 @@ function SingleWord({
   variants,
   children,
   ...props
-}: React.ComponentProps<typeof motion.div> & {
+}: React.ComponentProps<typeof motion.span> & {
   index: number;
   clip?: SplitModeOptions | "none";
   variants: Variants;
   children: React.ReactNode;
 }) {
   return (
-    <motion.div
+    <motion.span
       {...props}
       style={{ display: "inline-block" }}
       key={`word-${index}`}
       variants={variants}
     >
       {children}
-    </motion.div>
+    </motion.span>
   );
 }
 
@@ -114,20 +114,20 @@ function SingleChar({
   variants,
   children,
   ...props
-}: React.ComponentProps<typeof motion.div> & {
+}: React.ComponentProps<typeof motion.span> & {
   index: number;
   variants: Variants;
   children: React.ReactNode;
 }) {
   return (
-    <motion.div
+    <motion.span
       {...props}
       style={{ display: "inline-block" }}
       key={`char-${index}`}
       variants={variants}
     >
       {children}
-    </motion.div>
+    </motion.span>
   );
 }
 

@@ -4,6 +4,10 @@ description: "A utility for constructing className strings conditionally. Also s
 highlight: true
 ---
 
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+
 The `cn` function combines two powerful utilities:
 
 1. **`clsx`**: Handles conditional class names and various input formats
@@ -30,13 +34,27 @@ function YourFunction({ className }) {
 
 ## Installation
 
-```tsx
+<Steps>
+<Step>
+**Create your lib/utils.ts file**
+
+```bash
+touch src/lib/utils.ts
+```
+</Step>
+
+<Step>
+**Install dependencies**
+
+```bash
 npm install clsx tailwind-merge
 ```
+</Step>
 
+<Step>
+**Copy & paste the source code to your lib/utils.ts file**
 
-```tsx
-import React from "react";
+```tsx title="lib/utils.ts"
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -44,10 +62,5 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 ```
-
-
-
-
-
-
-Lorem ipsum dolor
+</Step>
+</Steps>

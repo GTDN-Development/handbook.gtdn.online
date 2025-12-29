@@ -1,6 +1,97 @@
 ---
-title: "Motion Split Text"
-description: "Lorem ipsum dolor"
+title: "Motion Split Text BETA"
+description: "A component that splits text into characters or words and animates them individually"
+highlight: true
 ---
 
-## Motion Split Text
+import { Example } from "@/components/example";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { SplitTextBeta as SplitText } from "@/registry/v2/ui/split-text-beta";
+
+
+<Example reload>
+<SplitText >
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</SplitText>
+</Example>
+
+
+## Usage
+
+```tsx
+import { SplitText } from "@/components/ui/motion-split-text"
+```
+
+```tsx
+<SplitTextBeta>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</SplitTextBeta>
+```
+
+
+## Installation 
+
+<Steps>
+<Step>
+**Install the dependencies**
+```bash
+npm install motion@latest
+```
+</Step>
+
+<Step>
+    **Create a component file**
+   
+
+```bash
+touch src/components/split-text.tsx
+```
+  </Step>
+  
+  <Step>
+
+    **Copy the source code of the component into the project.**
+
+<include cwd lang="tsx" meta='title="components/ui/motion-split-text.tsx"'>
+          src/registry/v2/ui/split-text-beta.tsx
+        </include>
+        Update the import paths to match the project setup.
+ </Step>
+</Steps>
+
+## API Reference
+
+The component extends `<motion.div>` and adds the following props on top.
+
+<TypeTable
+  type={{
+    children: {
+      description: "The text content to be split and animated",
+      type: "React.ReactNode",
+      required: true,
+    },
+    split: {
+      description: "Defines how the text should be split for animation",
+      type: '"chars" | "words" | "both"',
+      default: '"both"',
+    },
+    preset: {
+      description: "Predefined animation preset to use",
+      type: '"fade" | "slideUp" | "typing"',
+      default: '"slideUp"',
+    },
+    containerVariants: {
+      description: "Custom Framer Motion variants for the container element",
+      type: "Variants",
+    },
+    wordVariants: {
+      description: "Custom Framer Motion variants for word animations",
+      type: "Variants",
+    },
+    charVariants: {
+      description: "Custom Framer Motion variants for character animations",
+      type: "Variants",
+    },
+  }}
+/>
