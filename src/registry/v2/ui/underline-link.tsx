@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { Link, type LinkProps } from "@/components/ui/link";
+import { Link, type LinkProps } from "./link";
 
 const underlineLinkVariants = cva("relative min-h-max max-w-max min-w-max whitespace-nowrap", {
   variants: {
