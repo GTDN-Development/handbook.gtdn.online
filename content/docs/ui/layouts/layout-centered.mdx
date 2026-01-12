@@ -1,6 +1,134 @@
 ---
-title: "Layout centered"
-description: "Lorem ipsum dolor"
+title: "Layout Centered"
+description: "A complete page layout with header, footer, optional banner, and centered content area with accessibility features."
 ---
 
-## Layout centered
+import {Step, Steps} from "fumadocs-ui/components/steps";
+
+## Overview
+
+The Layout Centered component provides a full-page layout structure with header navigation, footer, optional dismissable banner, and a centered content area. It includes accessibility features like skip-to-content links and proper semantic HTML structure.
+
+## Usage
+
+Typically, you use this layout in your root layout to wrap all pages:
+
+```tsx title="app/layout.tsx"
+import { LayoutCentered } from "@/components/layout/layout-centered";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Providers>
+          <div className="relative isolate">
+            <LayoutCentered>{children}</LayoutCentered>
+          </div>
+          <Toaster />
+        </Providers>
+      </body>
+    </html>
+  );
+}
+```
+
+Or use it for specific page layouts:
+
+```tsx title="app/about/page.tsx"
+import { LayoutCentered } from "@/components/layout/layout-centered";
+
+export default function AboutPage() {
+  return (
+    <LayoutCentered>
+      <div className="container py-12">
+        <h1>About Us</h1>
+        <p>Company information...</p>
+      </div>
+    </LayoutCentered>
+  );
+}
+```
+
+
+
+## Installation
+<Steps>
+    <Step>
+        **Create the component file**
+
+        ```bash
+        touch src/components/layouts/header.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & Paste the code**
+
+        ```tsx title="src/components/layout/layout-centered.tsx"
+        "use client";
+
+import clsx from "clsx";
+import { Banner, BannerDescription, BannerDivider, BannerLink, BannerTitle } from "./banner";
+import { Link, type LinkProps } from "@/components/ui/link";
+import { Footer } from "./footer";
+import { Header } from "./header";
+import { navLinksArray } from "@/config/nav-links";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "../ui/button";
+
+// Main Layout Component
+export function LayoutCentered({ children }: { children: React.ReactNode }) {
+  const contentId = "gtdn-app-content";
+
+  return (
+    <div
+      className={clsx(
+        "[--navbar-height:--spacing(16)]",
+        "relative isolate flex min-h-dvh w-full flex-col justify-between *:shrink-0 *:grow-0 *:data-[slot=main]:shrink *:data-[slot=main]:grow"
+      )}
+    >
+      {/* Skip to content - A11y */}
+      <SkipToContent href={`#${contentId}`}>Skip to content</SkipToContent>
+
+      {/* Banner */}
+      <Banner isDismissable={true}>
+        <BannerTitle>Lorem ipsum dolor sit amet</BannerTitle>
+        <BannerDivider />
+        <BannerDescription>consectetur adipisicing elit ipsa laudantium</BannerDescription>
+        <BannerLink href="/">Call to action</BannerLink>
+      </Banner>
+
+      {/* Header */}
+      <Header narrow={true} navigation={navLinksArray} />
+
+      {/* Main content */}
+      <main id={contentId} data-slot="main" className="min-w-0">
+        {children}
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+}
+
+function SkipToContent({ children, className, ...props }: LinkProps) {
+  return (
+    <Link
+      {...props}
+      className={cn(
+        buttonVariants({ variant: "default" }),
+        "fixed top-6 left-6 z-1000 hidden -translate-y-[1000%] focus-visible:translate-y-0 pointer-fine:block",
+        className
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+ ```
+    </Step>
+</Steps>

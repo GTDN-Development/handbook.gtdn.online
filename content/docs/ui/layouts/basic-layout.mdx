@@ -1,0 +1,162 @@
+---
+title: "Basic Layout Setup"
+description: "Setup guide for basic layout components including navigation configuration and shared dependencies"
+---
+
+import {Step, Steps} from "fumadocs-ui/components/steps";
+
+## Overview
+
+Before installing Header and Footer components, you need to set up the shared configuration files and dependencies that these layout components require.
+
+## Installation
+
+<Steps>
+    <Step>
+        **Create the NavLink component**
+
+        The NavLink component is used for navigation links with active page detection and external link handling.
+
+        ```bash
+        touch src/components/layout/nav-link.tsx
+        ```
+
+        ```tsx title="src/components/layout/nav-link.tsx"
+        "use client";
+
+        import { Link, type LinkProps } from "../ui/link";
+        import { usePathname } from "next/navigation";
+        import { ArrowUpRightIcon } from "lucide-react";
+
+        export function NavLink({
+          children,
+          href,
+          target,
+          rel,
+          showExternalIcon = false,
+          ...props
+        }: LinkProps & { showExternalIcon?: boolean }) {
+          const pathname = usePathname();
+          const isExternal = typeof href === "string" && href.startsWith("http");
+          const isCurrent = pathname === href;
+
+          return (
+            <Link
+              {...props}
+              href={href}
+              aria-current={isCurrent ? "page" : undefined}
+              data-current={isCurrent ? "true" : undefined}
+              data-external={isExternal ? "true" : undefined}
+              target={isExternal ? target || "_blank" : target}
+              rel={isExternal ? rel || "noopener noreferrer" : rel}
+            >
+              {children}
+              {isExternal && showExternalIcon && (
+                <ArrowUpRightIcon aria-hidden="true" className="ml-1 inline size-[1em] opacity-50" />
+              )}
+            </Link>
+          );
+        }
+        ```
+    </Step>
+    <Step>
+        **Create navigation config files**
+
+        These configuration files define your site's navigation structure, legal links, and social media links.
+
+        ```bash
+        touch src/config/legal-links.ts
+        touch src/config/nav-links.ts
+        touch src/config/social-media-links.ts
+        ```
+
+        ```ts title="src/config/legal-links.ts"
+        import type { NavigationLink } from "./nav-links";
+
+        export const legalLinks = {
+          gdpr: { name: "Privacy Policy", href: "/gdpr" },
+          cookies: { name: "Cookie Policy", href: "/cookies" },
+        } as const satisfies Record<string, NavigationLink>;
+
+        export const legalLinksArray: NavigationLink[] = Object.values(legalLinks);
+        ```
+
+        ```ts title="src/config/nav-links.ts"
+        import { legalLinksArray } from "./legal-links";
+        import type { Route } from "next";
+
+        export type NavigationLink<T extends string = string> = {
+          name: string;
+          href: Route<T>;
+        };
+
+        export type NavigationDropdown = {
+          name: string;
+          items: NavigationLink[];
+        };
+
+        export type NavigationItem = NavigationLink | NavigationDropdown;
+
+        export const navLinks = {
+          home: {
+            name: "Home",
+            href: "/",
+          },
+          legalLinks: {
+            name: "Legal links",
+            items: [...legalLinksArray],
+          },
+          contact: {
+            name: "Contact",
+            href: "/contact",
+          },
+        } as const satisfies Record<string, NavigationItem>;
+
+        export const navLinksArray: NavigationItem[] = Object.values(navLinks);
+        ```
+
+        ```ts title="src/config/social-media-links.ts"
+        import { InstagramIcon, TwitterXIcon, YoutubeIcon, GitHubIcon } from "@/components/ui/icon-brand";
+
+        export type ExternalLink = {
+          name: string;
+          href: string;
+        };
+
+        export type SocialMediaLink = ExternalLink & {
+          icon: React.ComponentType<{ className?: string }>;
+        };
+
+        export const socialMediaLinks = {
+          instagram: {
+            name: "Instagram",
+            href: "https://www.instagram.com/user-name/",
+            icon: InstagramIcon,
+          },
+          twitter: {
+            name: "Twitter",
+            href: "https://x.com/user-name",
+            icon: TwitterXIcon,
+          },
+          youtube: {
+            name: "YouTube",
+            href: "https://www.youtube.com/@user-name",
+            icon: YoutubeIcon,
+          },
+          github: {
+            name: "GitHub",
+            href: "https://github.com/user-name",
+            icon: GitHubIcon,
+          },
+        } as const satisfies Record<string, SocialMediaLink>;
+
+        export const socialMediaLinksArray: SocialMediaLink[] = Object.values(socialMediaLinks);
+        ```
+    </Step>
+</Steps>
+
+## Next Steps
+
+Once you have completed this setup, you can proceed to install the layout components:
+- [Footer](/docs/ui/layouts/footer)
+- [Header](/docs/ui/layouts/header)

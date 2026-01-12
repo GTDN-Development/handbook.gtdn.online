@@ -1,6 +1,75 @@
 ---
-title: "Layout auth"
-description: "Lorem ipsum dolor"
+title: "Layout Auth"
+description: "A centered layout component designed for authentication pages like login, register, and password reset forms."
 ---
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
-## Layout auth
+## Overview
+
+The Layout Auth component provides a clean, centered layout specifically designed for authentication pages. It creates a full-height viewport with vertically and horizontally centered content, perfect for login forms, registration pages, and other auth-related interfaces.
+
+## Usage
+
+Use this layout for authentication pages in your app:
+
+```tsx title="app/login/page.tsx"
+import { LayoutAuth } from "@/components/layout/layout-auth";
+import { LoginForm } from "@/components/auth/login-form";
+
+export default function LoginPage() {
+  return (
+    <LayoutAuth>
+      <LoginForm />
+    </LayoutAuth>
+  );
+}
+```
+
+```tsx title="app/register/page.tsx"
+import { LayoutAuth } from "@/components/layout/layout-auth";
+import { RegisterForm } from "@/components/auth/register-form";
+
+export default function RegisterPage() {
+  return (
+    <LayoutAuth>
+      <RegisterForm />
+    </LayoutAuth>
+  );
+}
+```
+
+## Installation
+
+<Steps>
+    <Step>
+        **Create the component file**
+
+        ```bash
+        touch src/components/layout/layout-auth.tsx
+        ```
+    </Step>
+    <Step>
+        **Copy & Paste the code**
+
+        ```tsx title="src/components/layout/layout-auth.tsx"
+        import clsx from "clsx";
+import { Container } from "./container";
+
+export function LayoutAuth({
+  children,
+  ...props
+}: React.ComponentProps<"main"> & { children: React.ReactNode }) {
+  return (
+    <main
+      {...props}
+      className={clsx("relative isolate flex min-h-dvh w-full flex-col justify-center")}
+    >
+      <Container className="grid min-w-0 shrink grow place-items-center py-6 sm:py-10">
+        <div className="w-full">{children}</div>
+      </Container>
+    </main>
+  );
+}
+      ```
+    </Step>
+</Steps>
