@@ -1,34 +1,18 @@
 ---
 title: "Usage of i18n"
-description: "Jak implementovat překlady v komponentách"
+description: "Locale select and locale button components and guide on how to implement i18n internationalization"
+highlight: true
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
 
 ## Basic Rules  
 
-**Pages :** All routes must be in the `src/app/[locale]/` directory.
-**Links :** Always use our custom component `<Link />`, never `<a>` or `<next/link>`.
-**Client vs Server:** Server components use `getTranslations`, Client components `useTranslations`.
+All routes must be in the `src/app/[locale]/` directory. Always use our custom component `<Link />`. And Server components use `getTranslations`, Client components `useTranslations`.
 
-## 
-## Usage of Links
 
-```tsx
-import { Link } from "@/components/Link"; 
-
-export default function Nav() {
-  return (
-    <>
-      <Link href="/">Domů</Link>
-      <Link href="/products" locale="en">Products (Force EN)</Link>
-    </>
-  );
-}
-```
  ## Client Components
-In client components (e.g. forms, modals) use hook useTranslations.
-
+In client components (e.g. forms, modals) use hook `useTranslations`.
 
 ```tsx
 "use client";
@@ -42,16 +26,40 @@ export default function CtaButton() {
 }
 ```
 
-## Structure of JSON files
-Translations are stored in messages/*.json. Follow the established structure:
+## Server Components
+In server components (e.g. pages, layouts) use async function `getTranslations`.
 
+```tsx
+import { getTranslations } from "next-intl/server";
+import { Button } from "@/components/Button";
 
+export default async function HeroSection() {
+  const t = await getTranslations("common.hero");
 
-## Language switchers
+  return (
+    <div>
+      <h1>{t("title")}</h1>
+      <p>{t("description")}</p>
+      <Button>{t("cta")}</Button>
+    </div>
+  );
+}
+```
 
-## Locale Select
+## Components for language switching
+
+## Locale Select Component
 
 <Steps>
+<Step>
+**Install required shadcn components**
+
+This component requires the [Select](https://ui.shadcn.com/docs/components/select) component from shadcn/ui. Install it if you haven't already:
+
+```bash
+npx shadcn@latest add select
+```
+</Step>
 <Step>
 **Create the component file**
 ```bash
@@ -65,63 +73,54 @@ touch src/components/ui/locale-select.tsx
 "use client";
 
 import { routing } from "@/i18n/routing";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { Locale, usePathname, useRouter } from "@/i18n/routing";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useTransition } from "react";
-import { Select } from "@/components/select";
+import { useTransition } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import clsx from "clsx";
 
-export default function LocaleSelect({ className = "" }: { className?: string }) {
-  const t = useTranslations("locales");
-  const locale = useLocale();
-
-  return (
-    <LocaleSelectInput defaultValue={locale} className={className}>
-      {routing.locales.map((cur) => (
-        <option key={cur} value={cur}>
-          {t("locale", { locale: cur })}
-        </option>
-      ))}
-    </LocaleSelectInput>
-  );
-}
-
-function LocaleSelectInput({
-  defaultValue,
-  children,
-  className,
+export default function LocaleSelect({
+  className = "",
 }: {
-  defaultValue: string;
   className?: string;
-  children: React.ReactNode;
 }) {
+  const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const params = useParams();
 
-  function onSelectChange(event: ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = event.target.value as Locale;
+  function onValueChange(nextLocale: string) {
     startTransition(() => {
       router.replace(
         // @ts-expect-error -- TypeScript will validate that only known `params`
         // are used in combination with a given `pathname`. Since the two will
         // always match for the current route, we can skip runtime checks.
         { pathname, params },
-        { locale: nextLocale }
+        { locale: nextLocale as Locale },
       );
     });
   }
 
   return (
-    <Select
-      defaultValue={defaultValue}
-      disabled={isPending}
-      onChange={onSelectChange}
-      className={clsx("shrink-0", className)}
-    >
-      {children}
+    <Select value={locale} onValueChange={onValueChange} disabled={isPending}>
+      <SelectTrigger className={clsx("w-fit", className)}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {routing.locales.map((cur) => (
+          <SelectItem key={cur} value={cur}>
+            {cur}
+          </SelectItem>
+        ))}
+      </SelectContent>
     </Select>
   );
 }
@@ -133,6 +132,15 @@ function LocaleSelectInput({
 
 ## Locale Button
 <Steps>
+<Step>
+**Install required shadcn components**
+
+This component requires the [Button](https://ui.shadcn.com/docs/components/button) and [Dropdown Menu](https://ui.shadcn.com/docs/components/dropdown-menu) components from shadcn/ui. Install them if you haven't already:
+
+```bash
+npx shadcn@latest add button dropdown-menu
+```
+</Step>
 <Step>
 **Create the component file**
 
@@ -147,22 +155,24 @@ touch src/components/ui/locale-button.tsx
 "use client";
 
 import { routing } from "@/i18n/routing";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { Locale, usePathname, useRouter } from "@/i18n/routing";
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
-import { ButtonIcon } from "@/components/button-icon";
+import { Button } from "@/components/ui/button";
 import {
-  Dropdown,
-  DropdownButton,
   DropdownMenu,
-  DropdownItem,
-  DropdownSection,
-} from "@/components/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 
-export default function LocaleSelectButton({ className = "" }: { className?: string }) {
-  const t = useTranslations("locales");
+export default function LocaleSelectButton({
+  className = "",
+}: {
+  className?: string;
+}) {
   const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -176,36 +186,39 @@ export default function LocaleSelectButton({ className = "" }: { className?: str
         // are used in combination with a given `pathname`. Since the two will
         // always match for the current route, we can skip runtime checks.
         { pathname, params },
-        { locale: nextLocale }
+        { locale: nextLocale },
       );
     });
   }
 
-  // Get the display text for current locale (e.g., "CZ", "EN", etc.)
+  // Get the display text for current locale (e.g., "CS", "EN", etc.)
   const currentLocaleDisplay = locale.toUpperCase();
 
   return (
-    <Dropdown>
-      <DropdownButton
-        as={ButtonIcon}
-        variant="white"
-        size="lg"
-        aria-label={t("locale", { locale })}
-        disabled={isPending}
-        className={clsx("uppercase", className)}
-      >
-        {currentLocaleDisplay}
-      </DropdownButton>
-      <DropdownMenu anchor="bottom end">
-        <DropdownSection>
-          {routing.locales.map((cur) => (
-            <DropdownItem key={cur} onClick={() => onSelectLocale(cur)}>
-              {t("locale", { locale: cur })}
-            </DropdownItem>
-          ))}
-        </DropdownSection>
-      </DropdownMenu>
-    </Dropdown>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label={`Select language: ${currentLocaleDisplay}`}
+          disabled={isPending}
+          className={clsx("uppercase", className)}
+        >
+          {currentLocaleDisplay}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {routing.locales.map((cur) => (
+          <DropdownMenuItem
+            key={cur}
+            onClick={() => onSelectLocale(cur)}
+            className="uppercase cursor-pointer"
+          >
+            {cur}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 ```

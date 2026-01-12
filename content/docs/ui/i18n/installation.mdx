@@ -31,11 +31,10 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
   </Step>
 
   <Step>
-    **Configure routing**
+    **Copy & paste the source code**
 
-    Define supported languages (en, cs, others..).
 
-   ```tsx
+   ```tsx title="src/i18n/routing.ts"
  import { createNavigation } from "next-intl/navigation";
  import { defineRouting } from "next-intl/routing";
 
@@ -49,13 +48,14 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
   export const { Link, getPathname, redirect, usePathname, useRouter } = createNavigation(routing);
    ```
+     It defines supported languages (en, cs, others..).
+
   </Step>
 
   <Step>
-    **Configure request**
-    Renders translations based on the locale.
-   
-   ```tsx
+    **Copy & paste the source code**
+    
+   ```tsx title="src/i18n/request.ts"
     import { getRequestConfig } from "next-intl/server";
     import { routing } from "./routing";
 
@@ -75,12 +75,12 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
   };
   });
     ```
-    
+    It renders translations based on the locale.
   </Step>
 
   <Step>
-    **Middleware**
-```tsx
+    **Copy & paste the source code**
+```tsx title="src/middleware.ts"
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
@@ -90,13 +90,12 @@ export const config = {
   // Match only internationalized pathnames
   matcher: ["/", "/(cs|en)/:path*"],
 };
-
 ```
         
   </Step>
 
   <Step>
-    **Next.js Config**
+    **Update your next.config.ts file**
 
     ```tsx title="next.config.ts"
     import createNextIntlPlugin from 'next-intl/plugin';
@@ -127,84 +126,82 @@ export const config = {
   </Step>
 
   <Step>
-    **Root Layout**
-
-    This component holds `<html>`, fonts, and `NextIntlClientProvider` .
+    **Copy & paste the source code**
 
   ```tsx title="src/layout/layout-root.tsx"
-import { routing } from "@/i18n/routing";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
-import { notFound } from "next/navigation";
-import { Providers } from "@/components/layout/providers";
-// import { GoogleTagManager } from "@next/third-parties/google";
-// import { GoogleAnalytics } from "@next/third-parties/google";
-// import { isBrowser } from "./utils";
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export default async function LayoutRoot({
-  children,
-  locale,
-}: Readonly<{
-  children: React.ReactNode;
-  locale: string;
-}>) {
-  const messages = await getMessages();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (!routing.locales.includes(locale as any)) {
-    return notFound();
+  import { routing } from "@/i18n/routing";
+  import { NextIntlClientProvider } from "next-intl";
+  import { getMessages } from "next-intl/server";
+  import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+  import { notFound } from "next/navigation";
+  import { Providers } from "@/components/layout/providers";
+  // import { GoogleTagManager } from "@next/third-parties/google";
+  // import { GoogleAnalytics } from "@next/third-parties/google";
+  // import { isBrowser } from "./utils";
+  
+  const plusJakartaSans = Plus_Jakarta_Sans({
+    variable: "--font-plus-jakarta-sans",
+    subsets: ["latin"],
+  });
+  
+  const geistMono = Geist_Mono({
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
+  });
+  
+  export default async function LayoutRoot({
+    children,
+    locale,
+  }: Readonly<{
+    children: React.ReactNode;
+    locale: string;
+  }>) {
+    const messages = await getMessages();
+  
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!routing.locales.includes(locale as any)) {
+      return notFound();
+    }
+  
+    return (
+      <html
+        lang={locale}
+        suppressHydrationWarning
+        className={`${plusJakartaSans.variable} ${geistMono.variable}`}
+      >
+        <body
+          className="scroll-pt-16 overflow-x-clip scroll-smooth font-sans antialiased"
+          suppressHydrationWarning
+        >
+          <div className="relative isolate">
+            <NextIntlClientProvider messages={messages}>
+              <Providers>{children}</Providers>
+            </NextIntlClientProvider>
+          </div>
+  
+          {/* Fixed elements that should be visible on all pages */}
+          <TailwindScreen />
+        </body>
+      </html>
+    );
   }
-
-  return (
-  <html
-    lang={locale}
-    suppressHydrationWarning
-    className={`${plusJakartaSans.variable} ${geistMono.variable}`}
-  >
-    <body
-      className="text-dark-blue-950 scroll-pt-16 overflow-x-clip scroll-smooth bg-gray-50 font-sans antialiased"
-      suppressHydrationWarning
-    >
-      <div className="relative isolate">
-        <NextIntlClientProvider messages={messages}>
-          <Providers>{children}</Providers>
-        </NextIntlClientProvider>
+  
+  function TailwindScreen() {
+    if (process.env.NODE_ENV === "production") return null;
+  
+    return (
+      <div className="fixed bottom-16 left-5 z-99999 flex size-9 items-center justify-center rounded-full bg-[#282828] text-xs font-bold text-white uppercase inset-ring-1 inset-ring-current/15 dark:bg-black">
+        <div className="sm:hidden">-</div>
+        <div className="hidden sm:block md:hidden">sm</div>
+        <div className="hidden md:block lg:hidden">md</div>
+        <div className="hidden lg:block xl:hidden">lg</div>
+        <div className="hidden xl:block 2xl:hidden">xl</div>
+        <div className="hidden 2xl:block">2xl</div>
       </div>
-
-      {/* Fixed elements that should be visible on all pages */}
-      <TailwindScreen />
-    </body>
-  </html>
-  );
-}
-
-function TailwindScreen() {
-  if (process.env.NODE_ENV === "production") return null;
-
-  return (
-    <div className="fixed bottom-16 left-5 z-99999 flex size-9 items-center justify-center rounded-full bg-[#282828] text-xs font-bold text-[#fff] uppercase inset-ring-1 inset-ring-current/15 dark:bg-black">
-      <div className="sm:hidden">-</div>
-      <div className="hidden sm:block md:hidden">sm</div>
-      <div className="hidden md:block lg:hidden">md</div>
-      <div className="hidden lg:block xl:hidden">lg</div>
-      <div className="hidden xl:block 2xl:hidden">xl</div>
-      <div className="hidden 2xl:block">2xl</div>
-    </div>
-  );
-}
-
+    );
+  }
 ```
+This component holds `<html>`, fonts, and `NextIntlClientProvider` .
   </Step>
 
   <Step>
@@ -273,9 +270,7 @@ function TailwindScreen() {
  
 
   <Step>
-    **Root Redirect**
-
-    It ensures that the root domain (`/`) is redirected to the default or preferred language (here hardcoded to `/cs`).
+    **Copy & paste the source code**
 
     ```tsx title="src/app/page.tsx"
     import { redirect } from "next/navigation";
@@ -286,14 +281,13 @@ function TailwindScreen() {
       redirect("/cs");
     }
     ```
+    It ensures that the root domain (`/`) is redirected to the default or preferred language (here hardcoded to `/cs`).
   </Step>
 
   <Step>
-    **Sitemap**
+    **Copy & paste the source code**
 
-    generate sitemap.
-
-     ```tsx
+     ```tsx title="src/app/sitemap.tsx"
    import { host } from "@/config";
 import { Locale, getPathname, routing } from "@/i18n/routing";
 import { MetadataRoute } from "next";
@@ -321,6 +315,7 @@ function getUrl(href: Href, locale: Locale) {
 }
 
    ```
+  It generates sitemap.
   </Step>
   <Step>
     **Update your config.ts file**
@@ -334,7 +329,7 @@ function getUrl(href: Href, locale: Locale) {
 <Step>
 **Creating New Page**
 
-Every page has to call `setRequestLocale` for static site generation.
+Every page has to call `setRequestLocale` for static site generation. The structure of the page should be as follows:
 
 ```tsx title="src/app/[locale]/page.tsx"
 import { setRequestLocale } from "next-intl/server";
@@ -372,7 +367,9 @@ export default async function HomePage(props: Props) {
 </Step>
 
 <Step>
-**Update your translations.json file**
+**Update your messages.json files**
+
+The structure of the messages.json files should be as follows:
 
 ```json title="messages/cs.json"
 {
