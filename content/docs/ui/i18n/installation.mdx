@@ -23,14 +23,19 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
     **Create the directory structure**
     ```bash
     mkdir -p src/i18n messages src/components/layout
-    touch src/i18n/routing.ts src/i18n/request.ts src/middleware.ts
     touch messages/cs.json messages/en.json
-    touch src/config.ts src/app/sitemap.ts
-    touch src/components/layout/providers.tsx src/components/layout/layout-root.tsx
+    
     ```
   </Step>
-
   <Step>
+    **Create the routing file**
+
+    ```bash
+    touch src/i18n/routing.ts
+    ```
+  </Step>
+  <Step>
+  
     **Copy & paste the source code**
 
 
@@ -52,6 +57,13 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
   </Step>
 
+ <Step>
+    **Create the request file**
+
+    ```bash
+    touch src/i18n/request.ts
+    ```
+  </Step>
   <Step>
     **Copy & paste the source code**
     
@@ -77,7 +89,13 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
     ```
     It renders translations based on the locale.
   </Step>
-
+  <Step>
+     **Create the middleware file**
+ 
+     ```bash
+     touch src/i18n/middleware.ts
+     ```
+   </Step>
   <Step>
     **Copy & paste the source code**
 ```tsx title="src/middleware.ts"
@@ -106,6 +124,13 @@ export const config = {
     ```
   </Step>
 
+<Step>
+    **Create the Providers File**
+
+    ```bash
+    touch src/components/layout/providers.tsx
+    ```
+  </Step>
   <Step>
     **Global Providers**
 
@@ -124,7 +149,13 @@ export const config = {
     }
     ```
   </Step>
+  <Step>
+    **Create the layout root**
 
+    ```bash
+    touch src/components/layout/layout-root.tsx
+    ```
+  </Step>
   <Step>
     **Copy & paste the source code**
 
@@ -283,7 +314,13 @@ This component holds `<html>`, fonts, and `NextIntlClientProvider` .
     ```
     It ensures that the root domain (`/`) is redirected to the default or preferred language (here hardcoded to `/cs`).
   </Step>
-
+  <Step>
+     **Create the sitemap file**
+ 
+     ```bash
+     touchsrc/app/sitemap.ts
+     ```
+   </Step>
   <Step>
     **Copy & paste the source code**
 
@@ -317,6 +354,13 @@ function getUrl(href: Href, locale: Locale) {
    ```
   It generates sitemap.
   </Step>
+  <Step>
+     **Create the config.ts file**
+ 
+     ```bash
+     touch src/config.ts
+     ```
+   </Step>
   <Step>
     **Update your config.ts file**
 
@@ -365,6 +409,14 @@ export default async function HomePage(props: Props) {
 
 ```
 </Step>
+<Step>
+   **Create your messages files**
+
+   ```bash
+   touch messages/cs.json messages/en.json  
+   ```
+ </Step>
+
 
 <Step>
 **Update your messages.json files**

@@ -1,0 +1,89 @@
+---
+title: "Locale Select"
+description: "Locale select component"
+highlight: true
+---
+import {Step, Steps} from "fumadocs-ui/components/steps";
+
+
+
+
+## Installation
+<Steps>
+<Step>
+**Install required shadcn components**
+
+This component requires the [Select](https://ui.shadcn.com/docs/components/select) component from shadcn/ui. Install it if you haven't already:
+
+```bash
+npx shadcn@latest add select
+```
+</Step>
+<Step>
+**Create the component file**
+```bash
+touch src/components/ui/locale-select.tsx
+```
+</Step>
+<Step>
+**Copy & paste the source code**
+
+```tsx
+"use client";
+
+import { routing } from "@/i18n/routing";
+import { useLocale } from "next-intl";
+import { Locale, usePathname, useRouter } from "@/i18n/routing";
+import { useParams } from "next/navigation";
+import { useTransition } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import clsx from "clsx";
+
+export default function LocaleSelect({
+  className = "",
+}: {
+  className?: string;
+}) {
+  const locale = useLocale();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const pathname = usePathname();
+  const params = useParams();
+
+  function onValueChange(nextLocale: string) {
+    startTransition(() => {
+      router.replace(
+        // @ts-expect-error -- TypeScript will validate that only known `params`
+        // are used in combination with a given `pathname`. Since the two will
+        // always match for the current route, we can skip runtime checks.
+        { pathname, params },
+        { locale: nextLocale as Locale },
+      );
+    });
+  }
+
+  return (
+    <Select value={locale} onValueChange={onValueChange} disabled={isPending}>
+      <SelectTrigger className={clsx("w-fit", className)}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {routing.locales.map((cur) => (
+          <SelectItem key={cur} value={cur}>
+            {cur}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+```
+</Step>
+
+</Steps>
