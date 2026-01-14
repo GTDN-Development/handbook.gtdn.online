@@ -33,11 +33,6 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
     ```bash
     touch src/i18n/routing.ts
     ```
-  </Step>
-  <Step>
-  
-    **Copy & paste the source code**
-
 
    ```tsx title="src/i18n/routing.ts"
  import { createNavigation } from "next-intl/navigation";
@@ -63,10 +58,7 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
     ```bash
     touch src/i18n/request.ts
     ```
-  </Step>
-  <Step>
-    **Copy & paste the source code**
-    
+ 
    ```tsx title="src/i18n/request.ts"
     import { getRequestConfig } from "next-intl/server";
     import { routing } from "./routing";
@@ -95,9 +87,7 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
      ```bash
      touch src/i18n/middleware.ts
      ```
-   </Step>
-  <Step>
-    **Copy & paste the source code**
+
 ```tsx title="src/middleware.ts"
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
@@ -125,17 +115,12 @@ export const config = {
   </Step>
 
 <Step>
-    **Create the Providers File**
+    **Create or update your providers file**
 
     ```bash
     touch src/components/layout/providers.tsx
     ```
-  </Step>
-  <Step>
-    **Global Providers**
-
-    Wrapper for all React Contexts in your application. Customize according to your needs.
-
+ 
     ```tsx title="src/components/layout/providers.tsx"
     "use client";
 
@@ -148,6 +133,8 @@ export const config = {
       );
     }
     ```
+    Wrapper for all React Contexts in your application. Customize according to your needs.
+
   </Step>
   <Step>
     **Create the layout root**
@@ -155,9 +142,6 @@ export const config = {
     ```bash
     touch src/components/layout/layout-root.tsx
     ```
-  </Step>
-  <Step>
-    **Copy & paste the source code**
 
   ```tsx title="src/layout/layout-root.tsx"
   import { routing } from "@/i18n/routing";
@@ -301,13 +285,12 @@ This component holds `<html>`, fonts, and `NextIntlClientProvider` .
  
 
   <Step>
-    **Copy & paste the source code**
+      **Create new app/page.tsx**
 
     ```tsx title="src/app/page.tsx"
     import { redirect } from "next/navigation";
 
     // This page only renders when the app is built statically (output: 'export')
-    // nebo na root URL (/)
     export default function RootPage() {
       redirect("/cs");
     }
@@ -320,9 +303,6 @@ This component holds `<html>`, fonts, and `NextIntlClientProvider` .
      ```bash
      touchsrc/app/sitemap.ts
      ```
-   </Step>
-  <Step>
-    **Copy & paste the source code**
 
      ```tsx title="src/app/sitemap.tsx"
    import { host } from "@/config";
@@ -355,14 +335,11 @@ function getUrl(href: Href, locale: Locale) {
   It generates sitemap.
   </Step>
   <Step>
-     **Create the config.ts file**
+     **Create or update the config.ts file**
  
      ```bash
      touch src/config.ts
      ```
-   </Step>
-  <Step>
-    **Update your config.ts file**
 
     ```tsx title="src/config.ts"
    export const host =
@@ -371,7 +348,7 @@ function getUrl(href: Href, locale: Locale) {
   </Step>
 
 <Step>
-**Creating New Page**
+**Creating new page**
 
 Every page has to call `setRequestLocale` for static site generation. The structure of the page should be as follows:
 
@@ -415,11 +392,6 @@ export default async function HomePage(props: Props) {
    ```bash
    touch messages/cs.json messages/en.json  
    ```
- </Step>
-
-
-<Step>
-**Update your messages.json files**
 
 The structure of the messages.json files should be as follows:
 
