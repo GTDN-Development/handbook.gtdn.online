@@ -1,0 +1,54 @@
+---
+title: "Third-Party Scripts"
+description: "Integration component for loading Google Analytics, GTM, and other third-party scripts based on consent."
+highlight: true
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+
+## Installation
+### Create Third-Party Scripts Loader
+
+<Steps>
+    <Step>
+    ```bash
+    touch src/components/cookies/third-party-scripts.tsx
+    ```
+    </Step>
+    <Step>
+    ```tsx title="src/components/cookies/third-party-scripts.tsx"
+    import { getConsent } from "./server-utils";
+    import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+    
+    export async function ThirdPartyScripts() {
+      const consent = await getConsent();
+    
+      const gaId = process.env.NEXT_PUBLIC_GA_ID;
+      const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+    
+      return (
+        <>
+          {consent.analytics && gaId && <GoogleAnalytics gaId={gaId} />}
+          {consent.analytics && gtmId && <GoogleTagManager gtmId={gtmId} />}
+        </>
+      );
+    }
+    ```
+
+    </Step>
+    <Step>
+### Setup Environment Variables
+
+Create or update your `.env.local` file:
+
+```bash
+touch .env.local
+```
+
+```tsx title=".env.local"
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+```
+</Step>
+</Steps>

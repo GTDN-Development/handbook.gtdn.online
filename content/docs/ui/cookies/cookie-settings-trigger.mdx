@@ -1,0 +1,39 @@
+---
+title: "Cookie Settings Trigger"
+description: "Reusable button component that opens the cookie settings dialog, perfect for footers and menus."
+highlight: true
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+
+## Installation
+### Create Cookie Settings Trigger
+
+
+<Steps>
+    <Step>
+    ```bash
+    touch src/components/cookies/cookie-settings-trigger.tsx
+    ```
+    </Step>
+    <Step>
+    ```tsx title="src/components/cookies/cookie-settings-trigger.tsx"
+    "use client";
+    
+    import { useCookieContext } from "./cookie-context";
+    
+    type CookieSettingsTriggerProps = React.ComponentProps<"button">;
+    
+    export function CookieSettingsTrigger({ children, ...props }: CookieSettingsTriggerProps) {
+      const { openSettingsDialog } = useCookieContext();
+    
+      return (
+        <button type="button" onClick={openSettingsDialog} {...props}>
+          {children}
+        </button>
+      );
+    }
+    ```
+        </Step>
+</Steps>

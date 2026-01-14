@@ -1,0 +1,15 @@
+{
+  "title": "Cookies",
+  "pages": [
+    "cookies-consent-management",
+    "cookies-context",
+    "server-utils",
+    "cookie-consent-banner",
+    "cookie-settings-dialog",
+    "cookie-settings-trigger",
+    "cookie-error-boundary",
+    "dynamic-scripts",
+    "third-party-scripts",
+    "cookie-policy"
+  ]
+}

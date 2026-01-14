@@ -1,0 +1,270 @@
+---
+title: "Cookie Consent Management"
+description: "Privacy-first cookie consent system for Next.js 15+ with SSR support, GDPR compliance, and seamless third-party script integration."
+highlight: true
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+
+## Installation
+
+<Steps>
+
+<Step>
+
+### Install Dependencies
+
+```bash
+npm install @next/third-parties
+mkdir -p src/components/cookies
+```
+
+</Step>
+
+<Step>
+
+### Build the Components
+
+Implement each component in order. Click the links for full code:
+
+1. [Cookie Context](/docs/ui/cookies/cookies-context) - State management
+2. [Server Utils](/docs/ui/cookies/server-utils) - SSR support
+3. [Cookie Consent Banner](/docs/ui/cookies/cookie-consent-banner) - First-visit UI
+4. [Cookie Settings Dialog](/docs/ui/cookies/cookie-settings-dialog) - Preferences UI
+5. [Cookie Settings Trigger](/docs/ui/cookies/cookie-settings-trigger) - Footer button
+6. [Cookie Error Boundary](/docs/ui/cookies/cookie-error-boundary) - Error handling
+7. [Third-party Scripts](/docs/ui/cookies/third-party-scripts) - GA/GTM integration
+8. [Dynamic Scripts](/docs/ui/cookies/dynamic-scripts) - Auto-refresh
+9. [Cookie Policy](/docs/ui/cookies/cookie-policy) - Policy page component
+
+</Step>
+
+<Step>
+
+### Wire Up Root Layout
+
+```tsx title="src/app/layout.tsx"
+import { Suspense } from "react";
+import { Providers } from "@/components/layout/providers";
+import { CookieConsentBanner } from "@/components/cookies/cookie-consent-banner";
+import { CookieSettingsDialog } from "@/components/cookies/cookie-settings-dialog";
+import { CookieErrorBoundary } from "@/components/cookies/cookie-error-boundary";
+import { DynamicScripts } from "@/components/cookies/dynamic-scripts";
+import { ThirdPartyScripts } from "@/components/cookies/third-party-scripts";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Providers>
+          {children}
+
+          {/* Cookie consent UI */}
+          <CookieErrorBoundary>
+            <CookieConsentBanner />
+            <CookieSettingsDialog />
+            <DynamicScripts />
+          </CookieErrorBoundary>
+        </Providers>
+
+        {/* Third-party scripts (GA, GTM, etc.) */}
+        <Suspense fallback={null}>
+          <ThirdPartyScripts />
+        </Suspense>
+      </body>
+    </html>
+  );
+}
+```
+
+</Step>
+
+<Step>
+
+### Configure Your Cookies
+
+Create a central configuration file for all cookies:
+
+```ts title="src/config/cookies.ts"
+import type { Cookie } from "@/components/cookies/cookie-policy";
+
+export const cookies: Cookie[] = [
+  {
+    name: "cookie_consent",
+    provider: "Own",
+    purpose: "Stores cookie consent preferences.",
+    duration: "1 year",
+    category: "essential",
+    storageType: "cookie",
+  },
+  {
+    name: "theme",
+    provider: "Own",
+    purpose: "Stores theme preference (system/light/dark mode).",
+    duration: "Persistent",
+    category: "functional",
+    storageType: "localStorage",
+  },
+  {
+    name: "_ga",
+    provider: "Google Analytics",
+    purpose: "Distinguishes users for analytics (with consent).",
+    duration: "2 years",
+    category: "analytics",
+    storageType: "cookie",
+  },
+  // Add more cookies as needed
+];
+```
+
+</Step>
+
+<Step>
+
+### Create Cookie Policy Page
+
+```tsx title="src/app/cookies/page.tsx"
+import { CookiePolicy } from "@/components/cookies/cookie-policy";
+import { cookies } from "@/config/cookies";
+
+export default function CookiePolicyPage() {
+  return (
+    <div className="container max-w-4xl py-12">
+      <CookiePolicy
+        cookies={cookies}
+        company={{
+          name: "Your Company",
+          address: "123 Main St, City, Country",
+          id: "12345678",
+          domain: "example.com",
+        }}
+        contact={{
+          email: "privacy@example.com",
+          phone: "+1 234 567 890",
+        }}
+        lastUpdated="January 14, 2026"
+        effectiveDate="January 1, 2026"
+        locale="en"
+      />
+    </div>
+  );
+}
+```
+
+</Step>
+
+</Steps>
+
+## Usage
+
+### In Client Components
+
+```tsx
+"use client";
+import { useCookieContext } from "@/components/cookies/cookie-context";
+
+function MyComponent() {
+  const { hasConsentedTo, openSettingsDialog } = useCookieContext();
+
+  if (hasConsentedTo("analytics")) {
+    // Load analytics
+  }
+
+  return <button onClick={openSettingsDialog}>Cookie Settings</button>;
+}
+```
+
+### In Server Components
+
+```tsx
+import { getConsent, hasConsentedTo } from "@/components/cookies/server-utils";
+
+async function MyPage() {
+  const consent = await getConsent();
+  const hasAnalytics = await hasConsentedTo("analytics");
+
+  return <div>{hasAnalytics ? "Tracking on" : "Tracking off"}</div>;
+}
+```
+
+### In Your Footer
+
+```tsx
+import { CookieSettingsTrigger } from "@/components/cookies/cookie-settings-trigger";
+
+<CookieSettingsTrigger className="cursor-pointer underline">
+  Cookie Settings
+</CookieSettingsTrigger>
+```
+
+## Consent Categories
+
+- **necessary** - Always enabled (auth, session)
+- **functional** - User preferences (theme, language)
+- **analytics** - Usage tracking (GA, GTM)
+- **marketing** - Advertising and remarketing
+
+## How It Works
+
+1. **First visit** → Banner shows → User chooses
+2. **Cookie saved** → Page refreshes
+3. **Scripts load** based on consent
+4. **Return visits** → No banner, scripts load server-side
+
+## Configuration
+
+### Debug Mode
+
+Show banner on every page load (development only):
+
+```tsx title="src/components/cookies/cookie-context.tsx"
+const DEBUG_MODE = true; // Line ~8
+```
+
+### Environment Variables
+
+```bash title=".env.local"
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+```
+
+## Troubleshooting
+
+**Banner not showing?**
+- Delete `cookie_consent` cookie in DevTools
+- Check `DEBUG_MODE` is `true` in development
+
+**Scripts not loading?**
+- Verify env variables are set
+- Check consent in DevTools → Application → Cookies
+- Ensure consent category matches (e.g., "analytics")
+
+**Hydration errors?**
+- Always check `isMounted` before rendering consent-dependent content
+- Use `hasConsentedTo()` only after mount
+
+## File Structure
+
+```
+src/
+├── components/cookies/
+│   ├── cookie-context.tsx              # Client state management
+│   ├── server-utils.ts                 # Server-side helpers
+│   ├── cookie-consent-banner.tsx       # First-visit banner
+│   ├── cookie-settings-dialog.tsx      # Preferences dialog
+│   ├── cookie-settings-trigger.tsx     # Footer button
+│   ├── cookie-error-boundary.tsx       # Error handling
+│   ├── third-party-scripts.tsx         # GA/GTM loader
+│   ├── dynamic-scripts.tsx             # Auto-refresh
+│   └── cookie-policy.tsx               # Policy component
+├── config/
+│   └── cookies.ts                      # Cookie definitions
+└── app/
+    └── cookies/
+        └── page.tsx                    # Policy page
+```

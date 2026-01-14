@@ -1,0 +1,59 @@
+---
+title: "Cookie Error Boundary"
+description: "Error boundary wrapper that prevents cookie-related errors from crashing your application."
+highlight: true
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+
+## Installation
+### Create Cookie Error Boundary
+
+<Steps>
+    <Step>
+    ```bash
+    touch src/components/cookies/cookie-error-boundary.tsx
+    ```
+    </Step>
+    <Step>
+    ```tsx title="src/components/cookies/cookie-error-boundary.tsx"
+    "use client";
+    
+    import { Component, ReactNode } from "react";
+    
+    type Props = {
+      children: ReactNode;
+      fallback?: ReactNode;
+    };
+    
+    type State = {
+      hasError: boolean;
+    };
+    
+    export class CookieErrorBoundary extends Component<Props, State> {
+      constructor(props: Props) {
+        super(props);
+        this.state = { hasError: false };
+      }
+    
+      static getDerivedStateFromError() {
+        return { hasError: true };
+      }
+    
+      componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        console.error("Cookie consent error:", error, errorInfo);
+      }
+    
+      render() {
+        if (this.state.hasError) {
+          return this.props.fallback || null;
+        }
+    
+        return this.props.children;
+      }
+    }
+    ```
+
+    </Step>
+</Steps>

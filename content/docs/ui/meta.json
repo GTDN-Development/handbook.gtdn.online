@@ -1,7 +1,17 @@
 {
   "title": "UI",
   "description": "Components & guides for FE",
-  "pages": ["general", "guides", "i18n", "components", "layouts", "utils", "LLMs", "legal"],
+  "pages": [
+    "general",
+    "guides",
+    "i18n",
+    "components",
+    "layouts",
+    "utils",
+    "cookies",
+    "LLMs",
+    "legal"
+  ],
   "icon": "Palette",
   "root": true
 }
