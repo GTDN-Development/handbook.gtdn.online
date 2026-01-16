@@ -1,6 +1,129 @@
 ---
 title: "Deployment"
-description: "Lorem ipsum dolor"
+description: "How we ship code to production. From local to live in minutes."
 ---
 
-## Deployment
+## The Simple Version
+
+Most projects deploy like this:
+
+1. Push to `main` (or `dev` for staging)
+2. CI runs (linting, type checking, tests if they exist)
+3. Build happens automatically
+4. Deploy goes live
+
+No manual steps. No FTP.
+
+## Vercel
+
+Our default for Next.js projects.
+
+### Why Vercel
+
+- Made by the Next.js team
+- Zero config for Next.js projects
+- Preview deployments on every PR
+- Global CDN, automatic HTTPS
+
+### Setup
+
+1. Connect your GitHub repo to Vercel
+2. Set environment variables in Vercel dashboard
+3. Push to `main`
+
+Vercel detects Next.js and configures everything.
+
+### Environment Variables
+
+Set in Project Settings > Environment Variables.
+
+- **Production** - Live site
+- **Preview** - PR preview deployments
+- **Development** - When running `vercel dev` locally
+
+### Domains
+
+Add custom domains in Project Settings > Domains. Vercel handles SSL automatically.
+
+## Railway
+
+For backends, databases, and services that Vercel doesn't handle.
+
+### Use Cases
+
+- PostgreSQL / MySQL databases
+- Redis
+- WordPress or Strapi backends
+- Docker containers
+
+### Setup
+
+1. Create a project on Railway
+2. Add services (database, app, etc.)
+3. Connect GitHub for automatic deploys
+4. Set environment variables
+
+## Docker Deployments
+
+For self-hosted or complex setups. See the Docker docs for details.
+
+## CI/CD
+
+Most projects use GitHub Actions for CI. Basic flow:
+
+1. Push triggers workflow
+2. Install dependencies
+3. Run linting and type checking
+4. Run tests if they exist
+5. Build
+
+Vercel/Railway handle the actual deployment after CI passes.
+
+## Pre-Deploy Checklist
+
+- [ ] Environment variables set in deployment platform
+- [ ] Database migrations applied (if applicable)
+- [ ] Tested on preview deployment
+- [ ] Checked mobile and desktop
+
+## Rollbacks
+
+### Vercel
+
+Deployments > Find previous deployment > Promote to Production
+
+### Railway
+
+Similar process. Previous deployments are listed, redeploy any of them.
+
+### Git Revert
+
+```bash
+git revert <commit-hash>
+git push origin main
+```
+
+Creates a new commit that undoes the problematic one.
+
+## Environment Strategy
+
+| Environment | Branch | Purpose |
+|-------------|--------|---------|
+| Development | local | Local development |
+| Preview | feature/* | PR review |
+| Staging | dev | Testing before production |
+| Production | main | Live site |
+
+Some small projects skip staging and deploy directly to production from `main`.
+
+## Common Issues
+
+**Build fails but works locally** - Check Node version, environment variables, and that all dependencies are in `package.json`.
+
+**Environment variables not working** - Check they're set in the right environment. Redeploy after changing them.
+
+**404 on refresh** - Usually a routing issue. Check rewrite rules.
+
+## The Rule
+
+Deployments should be boring. Automated, predictable, reversible. If deploying feels risky, something's wrong with the process.

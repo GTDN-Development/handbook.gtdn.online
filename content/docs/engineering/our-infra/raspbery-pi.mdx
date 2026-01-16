@@ -1,6 +1,260 @@
 ---
-title: "Raspbery pi"
-description: "Lorem ipsum dolor"
+title: "Raspberry Pi"
+description: "Our self-hosted server. What it runs, how to access it, and why it exists."
 ---
 
-## Raspbery pi
+## Why a Raspberry Pi
+
+Not everything needs to live in the cloud. A $50 computer running in our office handles:
+
+- Internal tools that don't need high availability
+- Development and testing environments
+- Self-hosted services we don't want to pay monthly for
+- Learning and experimentation
+
+It's cheap, it's ours, and it's surprisingly capable.
+
+## What's Running
+
+Current services on the Pi:
+
+- **Docker** - Container runtime for everything
+- **Portainer** - Web UI for managing containers
+- **Nginx Proxy Manager** - Reverse proxy and SSL
+- **Various project containers** - Development instances, internal tools
+
+## Hardware
+
+**Model**: Raspberry Pi 4 (4GB or 8GB RAM)
+
+**Storage**:
+- SD card for OS
+- External SSD for data (SD cards die under heavy write loads)
+
+**Network**: Ethernet connection to office network
+
+## Accessing the Pi
+
+### SSH
+
+```bash
+ssh pi@<pi-ip-address>
+```
+
+Default user is `pi`. Get the IP from the office network or check the router.
+
+### Portainer
+
+Web interface for Docker management:
+
+```
+http://<pi-ip-address>:9000
+```
+
+Log in with credentials stored in our password manager.
+
+### From Outside the Office
+
+We don't expose the Pi directly to the internet. If you need remote access:
+
+1. VPN into the office network
+2. Then SSH or access Portainer as normal
+
+Or use a tunneling service like Cloudflare Tunnel for specific services.
+
+## Docker Setup
+
+Everything runs in Docker. No installing services directly on the OS.
+
+### Why Docker
+
+- Consistent environments
+- Easy to add/remove services
+- Portainer makes management visual
+- Can move containers to other hosts if needed
+
+### Common Commands
+
+```bash
+# List running containers
+docker ps
+
+# View logs
+docker logs <container-name>
+
+# Restart a container
+docker restart <container-name>
+
+# Pull latest image and restart
+docker pull <image>
+docker compose up -d
+```
+
+### Docker Compose
+
+Services are defined in compose files:
+
+```yaml
+# /home/pi/services/internal-tool/docker-compose.yml
+version: "3"
+services:
+  app:
+    image: internal-tool:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://...
+    restart: unless-stopped
+```
+
+Start with:
+
+```bash
+cd /home/pi/services/internal-tool
+docker compose up -d
+```
+
+## Nginx Proxy Manager
+
+Handles routing and SSL for services.
+
+### Access
+
+```
+http://<pi-ip-address>:81
+```
+
+### Adding a Service
+
+1. Proxy Hosts > Add Proxy Host
+2. Domain: `service.internal.yourdomain.com`
+3. Forward hostname: container name or localhost
+4. Forward port: service port
+5. Enable SSL if exposing externally
+
+### Internal DNS
+
+For internal services, add entries to office router DNS or use a local DNS server (like Pi-hole).
+
+## Backups
+
+The Pi is not redundant. Back up important data.
+
+### What to Back Up
+
+- Docker compose files
+- Volume data
+- Configuration files
+
+### Simple Backup Script
+
+```bash
+#!/bin/bash
+tar -czf /mnt/backup/pi-backup-$(date +%Y%m%d).tar.gz \
+  /home/pi/services \
+  /var/lib/docker/volumes
+```
+
+Run weekly via cron. Store backups off the Pi.
+
+## Maintenance
+
+### Updates
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Run monthly. Reboot if kernel updated.
+
+### Docker Cleanup
+
+Remove unused images and containers:
+
+```bash
+docker system prune -a
+```
+
+### Monitoring Disk Space
+
+```bash
+df -h
+```
+
+The SD card and SSD fill up. Clean old containers and logs regularly.
+
+### Check Temperature
+
+```bash
+vcgencmd measure_temp
+```
+
+Should stay under 80°C. Add a case with fan if it runs hot.
+
+## When Things Go Wrong
+
+### Service Not Responding
+
+1. Check if container is running: `docker ps`
+2. Check logs: `docker logs <container>`
+3. Restart container: `docker restart <container>`
+4. Restart Docker: `sudo systemctl restart docker`
+
+### Can't SSH
+
+1. Check if Pi is on network (ping it)
+2. Check if it's powered on
+3. If unresponsive, physical reboot (unplug and replug)
+
+### SD Card Corruption
+
+SD cards fail. Symptoms: read-only filesystem, boot failures.
+
+Solution:
+1. Flash a new SD card with Raspberry Pi OS
+2. Reinstall Docker
+3. Restore from backup
+
+Prevention: Use an SSD for data-heavy workloads.
+
+## Security
+
+- Change default password immediately
+- Disable password auth, use SSH keys
+- Keep OS and Docker updated
+- Don't expose to internet without proper security
+- Firewall: only open necessary ports
+
+### SSH Key Setup
+
+```bash
+# On your machine
+ssh-copy-id pi@<pi-ip-address>
+
+# On the Pi
+sudo nano /etc/ssh/sshd_config
+# Set: PasswordAuthentication no
+sudo systemctl restart sshd
+```
+
+## Limitations
+
+The Pi is not:
+
+- High availability (single point of failure)
+- High performance (ARM CPU, limited RAM)
+- Production infrastructure (no redundancy)
+
+Use it for internal tools, development, and experiments. Production workloads belong on Railway, Vercel, or proper cloud infrastructure.
+
+## Adding a New Service
+
+1. Create directory: `/home/pi/services/new-service`
+2. Add `docker-compose.yml`
+3. Run `docker compose up -d`
+4. Configure Nginx Proxy Manager if needed
+5. Document what you added
+
+## Documentation
+
+Keep a README in `/home/pi/services/` listing all running services, what they do, and how to access them. Future you will thank present you.

@@ -1,3 +1,10 @@
 {
-  "pages": ["getting-started", "setup-development-enviroment", "tools", "git-workflow", "using-ai"]
+  "pages": [
+    "getting-started",
+    "command-line",
+    "setup-development-enviroment",
+    "tools",
+    "git-workflow",
+    "using-ai"
+  ]
 }

@@ -1,6 +1,46 @@
 ---
-title: "Tech stack"
-description: "Lorem ipsum dolor"
+title: "Tech Stack"
+description: "The technologies we use to build web apps."
 ---
 
-## Tech stack
+
+## Framework
+
+[Next.js](https://nextjs.org/docs) is our default. Use **App Router** for new projects.
+
+**When to use something else:**
+- Simple SPA or client-only app: [Vite](https://vitejs.dev) + [React](https://react.dev)
+- Static site only: [Astro](https://astro.build)
+- Client requirement: adapt
+
+## UI Components
+
+Pick based on project needs:
+- [shadcn/ui](https://ui.shadcn.com) - Current default
+- [shadcnblocks.com](https://www.shadcnblocks.com/) - Quick mocks when no design exists
+- [Base UI](https://base-ui.com) - Unstyled UI components - more reliable
+- [Radix UI](https://www.radix-ui.com) - Alternative and older, currently less maintained
+- [Headless UI](https://headlessui.com) - Used on older projects
+
+## CMS
+
+- [WordPress](https://wordpress.org) (headless) - Client familiarity
+- [Strapi](https://strapi.io) - More control
+
+## Forms & Validation
+
+- [react-hook-form](https://react-hook-form.com) or [TanStack Form](https://tanstack.com/form)
+- [Zod](https://zod.dev) for validation
+
+## State Management
+
+Start with React built-ins. When that's not enough:
+- [Zustand](https://zustand-demo.pmnd.rs) - Simple
+- [TanStack Query](https://tanstack.com/query) - Server state
+- [nuqs](https://nuqs.dev/) - Type-safe URL search params state
+
+## Other Tools
+
+- **Animation**: [Motion](https://motion.dev) (use sparingly)
+
+Technology changes. Principles don't.

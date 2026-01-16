@@ -1,16 +1,7 @@
 {
   "title": "Engineering",
   "description": "All engineering docs",
-  "pages": [
-    "introduction",
-    "general",
-    "web-development",
-    "mobile-development",
-    "backend",
-    "dev-ops",
-    "our-infra",
-    "admin-ops"
-  ],
+  "pages": ["introduction", "general", "web-development", "our-infra", "admin-ops"],
   "icon": "Terminal",
   "root": true
 }

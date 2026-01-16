@@ -1,27 +1,131 @@
 ---
-title: "Setup development enviroment"
-description: "Lorem ipsum dolor"
+title: "Setup Development Environment"
+description: "Get your machine ready for development. Terminal tools and dependencies."
 ---
 
-For effective engineering, we all need certain tools and apps to have installed. No matter if you are front-end, back-end, dev ops engineer or something else, if you are working with code, you should have installed those things.
+## Prerequisites
 
-Apps and tools we need:
+You need a Mac, Linux, or Windows machine with admin access. We primarily develop on Mac, so these instructions lean that way. Adapt as needed.
 
-- Homebrew
-- Git
-- Node Version Manager (NVM)
-- Node.js & NPM (Node Package Manager)
-- Bun
-- PHP
-- Composer (PHP)
-- SQL
-- Python
-- Docker
-- OrbStack (Managing of docker containers)
-- Insomnia
+**Terminal basics are expected.** If not, read the Command Line page first.
 
-## Mac Setup
+If any command doesn't work, check the linked website for current instructions.
 
-## Linux Setup
+For desktop apps (code editors, database tools, etc.), see the Tools page.
 
-## Windows setup
+## Homebrew (Mac only)
+
+The package manager for Mac. Install it first, use it for everything else.
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+[brew.sh](https://brew.sh)
+
+## Git
+
+Version control. Non-negotiable.
+
+```bash
+# Mac
+brew install git
+
+# Linux (Debian/Ubuntu)
+sudo apt install git
+```
+
+Configure it:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
+
+[git-scm.com](https://git-scm.com)
+
+## Node Version Manager (NVM)
+
+Don't install Node directly. Use NVM so you can switch versions between projects.
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+```
+
+Restart your terminal, then:
+
+```bash
+nvm install --lts
+nvm use --lts
+```
+
+[github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+
+## Bun
+
+Fast JavaScript runtime and package manager. We use it on some projects.
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+[bun.sh](https://bun.sh)
+
+## Docker
+
+On Mac, install OrbStack (see Tools page). On Linux:
+
+```bash
+sudo apt install docker.io docker-compose
+```
+
+[docker.com](https://docker.com)
+
+## PHP & Composer
+
+For WordPress, Laravel, and other PHP projects.
+
+```bash
+# Mac
+brew install php composer
+
+# Linux (Debian/Ubuntu)
+sudo apt install php php-cli composer
+```
+
+[php.net](https://php.net) / [getcomposer.org](https://getcomposer.org)
+
+## Python
+
+Some tooling requires Python.
+
+```bash
+# Mac
+brew install python
+
+# Linux (Debian/Ubuntu)
+sudo apt install python3 python3-pip
+```
+
+[python.org](https://python.org)
+
+## Verify Your Setup
+
+```bash
+git --version
+node --version
+npm --version
+docker --version
+```
+
+All should return a version number.
+
+## Troubleshooting
+
+**Permission errors on npm?** Don't use `sudo`. Fix your npm permissions or use nvm properly.
+
+**Docker won't start?** On Mac, make sure OrbStack is running. On Linux, check if the docker service is active.
+
+**Node version mismatch?** Check if the project has a `.nvmrc` file and run `nvm use`.
+
+**Command not found after install?** Restart your terminal or run `source ~/.zshrc` (or `~/.bashrc`).

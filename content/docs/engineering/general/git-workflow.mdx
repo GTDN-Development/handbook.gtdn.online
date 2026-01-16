@@ -1,6 +1,122 @@
 ---
-title: "Git workflow"
-description: "Lorem ipsum dolor"
+title: "Git Workflow"
+description: "How we use Git. Branch naming, commits, pull requests, and the flow that keeps everyone sane."
 ---
 
-## Git workflow
+## The Flow
+
+1. Create a branch from `main` (or `dev` if the project uses it)
+2. Do the work
+3. Keep your branch up to date with the target branch
+4. Push and open a pull request (PR)
+5. Get it reviewed (seniors can skip and merge directly if confident)
+6. Merge (squash and merge) and delete your branch
+
+## Branch Strategy
+
+**Most projects** use `dev` for development/staging and `main` for production.
+
+```
+main → production
+dev → development/staging
+feature/* → your work
+```
+
+**Small projects** may only have `main`. In these cases, direct commits are acceptable when:
+- The change is small and tested (compiles, works locally)
+- You're the only one working on it
+- It's trivial (typo, copy update) or an emergency
+
+Don't commit directly to `main` if the project has a `dev` branch, multiple people are working, or it's a significant change.
+
+## Branch Naming
+
+Use descriptive names with prefixes:
+
+```
+feature/add-contact-form
+fix/broken-header-link
+refactor/cleanup-auth-logic
+chore/update-dependencies
+```
+
+Lowercase, hyphens, specific enough that someone knows what it's about.
+
+## Commits
+
+Write clear messages:
+
+```bash
+# Good
+git commit -m "Add email validation to contact form"
+git commit -m "Fix mobile menu not closing on navigation"
+
+# Bad
+git commit -m "fix"
+git commit -m "stuff"
+```
+
+Better to let AI generate the message than write "fix". `WIP` commits are fine early in development for simple features.
+
+**Commit often, push often.** Small commits are easier to review and revert.
+
+## Pull Requests
+
+**Before opening:**
+1. Pull latest from target branch and rebase
+2. Run the linter
+3. Test your changes locally
+
+**The PR itself:**
+- Clear title describing the change
+- What, why, and context in description
+- Screenshots for visual changes
+- Link to the task if applicable
+- Tag someone who knows the codebase
+
+**Seniors:** If you're confident in your changes, you can skip the review and merge directly.
+
+We typically use **squash and merge** to keep history clean. Delete your branch after merging.
+
+## Common Commands
+
+**Starting new work:**
+```bash
+git checkout dev  # or main
+git pull origin dev
+git checkout -b feature/my-new-feature
+```
+
+**Keeping your branch up to date** (do this frequently):
+```bash
+git checkout dev
+git pull origin dev
+git checkout feature/my-branch
+git rebase dev
+```
+
+**Undoing a commit (not yet pushed):**
+```bash
+git reset --soft HEAD~1
+```
+
+**Undoing a commit (already pushed):**
+```bash
+git revert <commit-hash>
+```
+
+Don't rewrite history on shared branches.
+
+## When Things Go Wrong
+
+If you're stuck:
+1. Don't panic
+2. Don't force push
+3. Google the specific error (or ask AI)
+4. Ask for help before making it worse
+
+The reflog is your friend:
+
+```bash
+git reflog
+```

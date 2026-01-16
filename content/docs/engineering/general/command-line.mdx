@@ -1,0 +1,162 @@
+---
+title: "Command Line"
+description: "Essential terminal commands you need to know. Quick reference for navigating, files, and common tasks."
+---
+
+## Why Command Line
+
+GUIs are nice. The command line is faster once you know it. You'll use it daily for git, npm, navigating projects, and running scripts.
+
+## Navigation
+
+```bash
+pwd                   # Print working directory (where am I?)
+ls                    # List files and folders
+ls -la                # List all files including hidden, with details
+cd folder             # Change directory into folder
+cd ..                 # Go up one directory
+cd ~                  # Go to home directory
+cd -                  # Go to previous directory
+```
+
+## Files and Folders
+
+```bash
+mkdir folder          # Create a directory
+mkdir -p a/b/c        # Create nested directories
+touch file.txt        # Create an empty file
+cp file.txt copy.txt  # Copy a file
+cp -r folder backup   # Copy a folder recursively
+mv old.txt new.txt    # Rename or move a file
+rm file.txt           # Delete a file (no undo!)
+rm -rf folder         # Delete a folder and contents (dangerous!)
+```
+
+## Reading Files
+
+```bash
+cat file.txt          # Print entire file
+head file.txt         # Print first 10 lines
+tail file.txt         # Print last 10 lines
+tail -f file.txt      # Follow file (useful for logs)
+less file.txt         # Paginated view (q to quit)
+```
+
+## Searching
+
+```bash
+find . -name "*.js"           # Find files by name
+grep "text" file.txt          # Search for text in file
+grep -r "text" .              # Search recursively in current dir
+grep -i "text" file.txt       # Case-insensitive search
+```
+
+## Pipes and Redirection
+
+```bash
+command > file.txt    # Write output to file (overwrites)
+command >> file.txt   # Append output to file
+command | grep text   # Pipe output to another command
+```
+
+## Process Management
+
+```bash
+Ctrl+C                # Stop running process
+Ctrl+Z                # Suspend process
+bg                    # Resume in background
+jobs                  # List background jobs
+kill PID              # Kill process by ID
+killall node          # Kill all processes by name
+```
+
+## Environment
+
+```bash
+echo $PATH            # Print PATH variable
+export VAR=value      # Set environment variable
+env                   # List all environment variables
+which node            # Find where a command lives
+```
+
+## Useful Shortcuts
+
+```bash
+Tab                   # Autocomplete file/folder names
+Up/Down arrows        # Navigate command history
+Ctrl+R                # Search command history
+Ctrl+A                # Go to beginning of line
+Ctrl+E                # Go to end of line
+Ctrl+L                # Clear screen (or type 'clear')
+!!                    # Repeat last command
+```
+
+## Permissions
+
+```bash
+chmod +x script.sh    # Make file executable
+chmod 755 file        # rwx for owner, rx for others
+chown user file       # Change file owner
+```
+
+## Networking
+
+```bash
+curl https://url      # Fetch a URL
+curl -I https://url   # Fetch headers only
+ping google.com       # Check connectivity
+lsof -i :3000         # What's using port 3000?
+```
+
+## Vim Survival Guide
+
+We're not Vim experts. But sometimes you end up in Vim (like when git opens it for commit messages) and need to escape.
+
+**Absolute basics:**
+
+```bash
+i                     # Enter insert mode (now you can type)
+Esc                   # Exit insert mode
+:w                    # Save
+:q                    # Quit
+:wq                   # Save and quit
+:q!                   # Quit without saving (force)
+```
+
+If you're stuck in Vim: press `Esc` a few times, then type `:q!` and press Enter. You're out.
+
+To avoid Vim for git commits, set a different editor:
+
+```bash
+git config --global core.editor "code --wait"  # VS Code
+git config --global core.editor "zed --wait"   # Zed
+```
+
+## Common Patterns
+
+**Run something in background:**
+
+```bash
+npm run dev &
+```
+
+**Chain commands:**
+
+```bash
+npm install && npm run build    # Run second only if first succeeds
+npm install; npm run build      # Run both regardless
+```
+
+**Run with sudo (admin):**
+
+```bash
+sudo command          # Run as admin (use sparingly)
+```
+
+## Learning More
+
+This covers the essentials. For deeper learning:
+
+- `man command` - Read the manual for any command
+- [explainshell.com](https://explainshell.com) - Explains shell commands
+- Practice - The more you use it, the more natural it becomes

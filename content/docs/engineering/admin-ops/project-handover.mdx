@@ -1,6 +1,170 @@
 ---
-title: "Project handover"
-description: "Lorem ipsum dolor"
+title: "Project Handover"
+description: "How to properly hand off a project. Documentation, access, and making sure nothing falls through the cracks."
 ---
 
-## Project handover
+## Why Handovers Matter
+
+Projects change hands. Developers leave, clients take over maintenance, or a different team picks up the work. A bad handover creates months of confusion. A good one takes a few hours and saves everyone headaches.
+
+## When Handovers Happen
+
+- **Client takes over** - Project complete, client's team maintains it
+- **Team transition** - Different developer takes ownership
+- **Agency to agency** - Client moves to another vendor
+- **End of contract** - Maintenance period ends
+
+Regardless of the reason, the process is the same.
+
+## The Handover Checklist
+
+### 1. Documentation
+
+Update or create:
+
+- [ ] README with setup instructions
+- [ ] Architecture overview (what connects to what)
+- [ ] Environment variables list with descriptions
+- [ ] Deployment process documentation
+- [ ] Known issues and quirks
+- [ ] Contact info for third-party services
+
+### 2. Access Transfer
+
+Transfer or share credentials for:
+
+- [ ] GitHub repository (add their team, remove ours if needed)
+- [ ] Vercel or hosting platform
+- [ ] Railway or database hosting
+- [ ] Domain registrar
+- [ ] CMS admin accounts
+- [ ] Third-party APIs (Stripe, email service, etc.)
+- [ ] Analytics (Google Analytics, Vercel Analytics)
+- [ ] Error tracking (Sentry, etc.)
+
+Use a password manager or secure sharing method. Never send credentials in plain email.
+
+### 3. Domain & DNS
+
+- [ ] Transfer domain to client's registrar, or
+- [ ] Update domain contacts to client's info
+- [ ] Document current DNS configuration
+- [ ] Ensure client has access to make DNS changes
+
+### 4. Repository
+
+- [ ] All code pushed and merged
+- [ ] No hanging branches with important work
+- [ ] Dependencies up to date (or documented if not)
+- [ ] No hardcoded secrets or sensitive data
+- [ ] Clean git history (squash WIP commits)
+
+### 5. Hosting & Infrastructure
+
+- [ ] Transfer project ownership in Vercel
+- [ ] Transfer Railway project or provide access
+- [ ] Document any scheduled tasks or cron jobs
+- [ ] List all services and their purposes
+- [ ] Provide database backup before transfer
+
+### 6. CMS & Content
+
+- [ ] Create admin account for new owner
+- [ ] Document custom post types and fields
+- [ ] Export content if migrating platforms
+- [ ] Document any custom plugins or modifications
+
+## The Handover Meeting
+
+Schedule a call to walk through:
+
+1. **Architecture** - How the system works, what talks to what
+2. **Deployment** - How to push changes live
+3. **Common tasks** - Adding content, updating pages, etc.
+4. **Known issues** - Bugs we know about, workarounds
+5. **Questions** - Answer anything unclear
+
+Record the meeting if possible. Becomes documentation.
+
+## Documentation Template
+
+Create a `HANDOVER.md` in the repo:
+
+```markdown
+# Project Handover
+
+## Overview
+Brief description of what this project does.
+
+## Architecture
+- Frontend: Next.js on Vercel
+- CMS: WordPress on Railway
+- Database: MySQL on Railway
+
+## Access Required
+- GitHub: [repo-url]
+- Vercel: [project-url]
+- Railway: [project-url]
+- WordPress Admin: [admin-url]
+
+## Environment Variables
+| Variable | Purpose | Where to get it |
+|----------|---------|-----------------|
+| DATABASE_URL | Database connection | Railway dashboard |
+| WORDPRESS_URL | CMS API endpoint | Railway public URL |
+
+## Deployment
+Push to `main` branch. Vercel deploys automatically.
+
+## Common Tasks
+
+### Adding a blog post
+1. Log into WordPress admin
+2. Posts > Add New
+3. Publish
+
+### Updating homepage
+1. Pages > Home in WordPress
+2. Edit content
+3. Save (Next.js revalidates automatically)
+
+## Known Issues
+- [Issue description and workaround]
+
+## Contacts
+- Original developer: name@email.com (available until [date])
+- Hosting support: Vercel/Railway support channels
+```
+
+## After Handover
+
+### Support Period
+
+Define clearly:
+
+- How long we're available for questions (2 weeks typical)
+- What's included (answering questions vs. fixing bugs)
+- How to reach us during this period
+
+### Clean Break
+
+After support period:
+
+- Remove our team's access (unless ongoing relationship)
+- Archive internal documentation
+- Close related tasks in project management
+- Invoice any remaining work
+
+## Receiving a Handover
+
+When taking over someone else's project:
+
+1. **Get all access first** - Don't start until you have everything
+2. **Run it locally** - Verify setup instructions work
+3. **Deploy a test change** - Confirm deployment process
+4. **Check all integrations** - Make sure third-party services work
+5. **Document what's missing** - Fill gaps in documentation
+
+## The Rule
+
+A project isn't done until someone else can maintain it without you. Documentation and clean handover are part of the job, not an afterthought.
