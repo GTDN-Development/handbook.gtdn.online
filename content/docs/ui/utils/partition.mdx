@@ -1,6 +1,131 @@
 ---
 title: "Partition"
-description: "Lorem ipsum dolor"
+description: "The partition function splits an array into visible and overflow parts based on a maximum count. Useful for avatar groups, tag lists, or any UI showing limited items with a '+N more' indicator."
+highlight: true
 ---
 
-funkce avatar
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+## Usage
+
+```tsx
+import { partition } from "@/lib/utils";
+
+const users = ["Alice", "Bob", "Charlie", "Diana", "Eve"];
+const { visible, overflow, total } = partition(users, 3);
+
+console.log(visible);  // ["Alice", "Bob", "Charlie"]
+console.log(overflow); // ["Diana", "Eve"]
+console.log(total);    // 5
+```
+
+## Installation
+
+<Steps>
+<Step>
+**Create your lib/utils.ts file**
+
+```bash
+touch src/lib/utils.ts
+```
+</Step>
+
+<Step>
+**Copy & paste the source code to your lib/utils.ts file**
+
+```tsx title="lib/utils.ts"
+export function partition<T>(items: T[], max: number) {
+  const visible: T[] = [];
+  const overflow: T[] = [];
+  const total = items.length;
+
+  for (const item of items) {
+    if (visible.length < max) {
+      visible.push(item);
+    } else {
+      overflow.push(item);
+    }
+  }
+
+  return { visible, overflow, total };
+}
+```
+</Step>
+</Steps>
+
+## Example with Avatar Group
+
+```tsx
+import {
+  Avatar,
+  AvatarGroup,
+  AvatarImage,
+  AvatarInitials,
+  partition
+} from '@/components/avatar'
+
+function Example() {
+  // Example data
+  const users = [
+    { id: "1", name: "User 1", src: "/avatar.jpg", color: null },
+    { id: "2", name: "JS", src: null, color: "primary" },
+    { id: "3", name: "AJ", src: null, color: "destructive" },
+    { id: "4", name: "User 4", src: "/avatar.jpg", color: null },
+    { id: "5", name: "User 5", src: "/avatar.jpg", color: null },
+    { id: "6", name: "User 6", src: "/avatar.jpg", color: null },
+  ];
+
+  // Split users into visible and overflow
+  const { visible, overflow } = partition(users, 3);
+
+  return (
+    <AvatarGroup offset="sm">
+      {visible.map((user) => (
+        <Avatar key={user.id} className={`size-12   ${
+          user.color ? `bg-${user.color}/20 text-${user.color}-bold` : 'bg-background'
+        }`}>
+          {user.src ? (
+            <AvatarImage src={user.src} alt={user.name} width={64} height={64} />
+          ) : (
+            <AvatarInitials name={user.name} />
+          )}
+        </Avatar>
+      ))}
+
+      {overflow.length > 0 && (
+        <Avatar className="size-12 bg-elevated text-default">
+          <AvatarInitials>{`+${overflow.length}`}</AvatarInitials>
+        </Avatar>
+      )}
+    </AvatarGroup>
+  );
+}
+```
+
+## API Reference
+
+<TypeTable
+  type={{
+    "items": {
+      description: "Array of items to partition",
+      type: "T[]",
+    },
+    "max": {
+      description: "Maximum number of items in the visible array",
+      type: "number",
+    },
+    "↳ visible": {
+      description: "Returned items within the max limit",
+      type: "T[]",
+    },
+    "↳ overflow": {
+      description: "Returned items exceeding the max limit",
+      type: "T[]",
+    },
+    "↳ total": {
+      description: "Returned total count of all items",
+      type: "number",
+    },
+  }}
+/>

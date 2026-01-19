@@ -1,6 +1,142 @@
 ---
-title: "Shiki syntax highlighting"
-description: "Lorem ipsum dolor"
+title: "Shiki Syntax Highlighting"
+description: "A syntax highlighter using TextMate grammars with CSS variables for theming"
+highlight: true
 ---
 
-## Shiki syntax highlighting
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+Shiki is a syntax highlighter. This guide covers setting up Shiki with CSS variables in Next.js, allowing you to control syntax colors through your design system.
+
+## Installation
+
+<Steps>
+<Step>
+**Install the dependencies**
+
+```bash
+npm install -D shiki
+```
+</Step>
+
+<Step>
+**Create the CSS file**
+
+```bash
+touch src/styles/shiki.css
+```
+</Step>
+
+<Step>
+**Add the Shiki CSS variables**
+
+```css title="styles/shiki.css"
+:root {
+  --shiki-background: transparent;
+  --shiki-foreground: var(--color-white);
+  --shiki-token-constant: var(--color-blue-300);
+  --shiki-token-string: var(--color-green-300);
+  --shiki-token-comment: var(--color-neutral-500);
+  --shiki-token-keyword: var(--color-red-300);
+  --shiki-token-parameter: var(--color-blue-300);
+  --shiki-token-function: var(--color-violet-300);
+  --shiki-token-string-expression: var(--color-emerald-300);
+  --shiki-token-punctuation: var(--color-neutral-200);
+  --shiki-token-link: var(--color-white);
+}
+```
+</Step>
+
+<Step>
+**Import in your global styles**
+
+```css title="styles/globals.css"
+@import "./shiki.css";
+```
+</Step>
+
+<Step>
+**Create the highlighter file**
+
+```bash
+touch src/lib/shiki.tsx
+```
+</Step>
+
+<Step>
+**Copy & paste the source code**
+
+```tsx title="lib/shiki.tsx"
+import { createHighlighter } from "shiki";
+import { createCssVariablesTheme } from "shiki/core";
+
+const theme = createCssVariablesTheme({
+  name: "css-variables",
+  variablePrefix: "--shiki-",
+  variableDefaults: {},
+  fontStyle: true,
+});
+
+const highlighter = createHighlighter({
+  themes: [theme],
+  langs: ["bash", "html", "css", "js", "ts", "jsx", "tsx", "json"],
+});
+
+export async function highlight(code: string, lang: string) {
+  const h = await highlighter;
+  return h.codeToHtml(code, {
+    lang,
+    theme: "css-variables",
+  });
+}
+```
+
+Add more languages to the `langs` array as needed. See [Shiki languages](https://shiki.style/languages) for available options.
+</Step>
+
+<Step>
+**Create the CodeBlock component**
+
+```bash
+touch src/components/ui/code-block.tsx
+```
+</Step>
+
+<Step>
+**Copy & paste the component code**
+
+```tsx title="components/ui/code-block.tsx"
+import type { BundledLanguage } from "shiki";
+import { highlight } from "@/lib/shiki";
+
+interface CodeBlockProps {
+  children: string;
+  lang: BundledLanguage;
+}
+
+export async function CodeBlock({ children, lang }: CodeBlockProps) {
+  const html = await highlight(children, lang);
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+}
+```
+
+</Step>
+</Steps>
+
+## Usage
+
+```tsx
+import { CodeBlock } from "@/components/ui/code-block";
+
+const code = `
+function greet(name: string) {
+  return "Hello, " + name;
+}
+`;
+
+export default function Page() {
+  return <CodeBlock lang="ts">{code}</CodeBlock>;
+}
+```
+
+For more information, visit the [Shiki documentation](https://shiki.style).
